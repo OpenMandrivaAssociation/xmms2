@@ -1,12 +1,13 @@
-%define funny_version DrHouse
+%define funny_version DrJekyll
 
 %define major 0
 %define libname %mklibname xmms2_ %{major}
+%define develname %mklibname -d xmms2
 
 Summary:	XMMS2 is a redesign of the XMMS music player
 Name:		xmms2
 Version:	0.2
-Release:	%mkrel 0.2.%{funny_version}.2
+Release:	%mkrel 0.2.%{funny_version}.1
 Group:          Sound
 License:        GPL
 URL:            http://xmms2.xmms.se/
@@ -71,13 +72,14 @@ of this, there is a flexible media library to organize your music.
 
 This library is mandatory for xmms2 and for all its plugins to run.
 
-%package -n	%{libname}-devel
+%package -n	%{develname}
 Summary:	Development package with static libs and headers
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release} 
+Provides:	%{name}-devel = %{version}-%{release}
+Obsoletes:	%{libname}-devel
 
-%description -n	%{libname}-devel
+%description -n	%{develname}
 XMMS2 is a redesign of the XMMS music player. It features a client-server
 model, allowing multiple (even simultaneous!) user interfaces, both textual
 and graphical. All common audio formats are supported using plugins. On top
@@ -207,7 +209,7 @@ rm -rf %{buildroot}
 %doc AUTHORS COPYING* INSTALL README TODO
 %attr(0755,root,root) %{_libdir}/libxmmsclient*.so.%{major}*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %{_includedir}/xmms2
 %attr(0755,root,root) %{_libdir}/lib*.so
