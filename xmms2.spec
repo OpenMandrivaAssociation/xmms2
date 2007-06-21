@@ -12,7 +12,6 @@ Group:          Sound
 License:        GPL
 URL:            http://xmms2.xmms.se/
 Source0:        http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{funny_version}.tar.bz2
-Patch0:		xmms2-0.2DrHouse-mlib.diff
 BuildRequires:	SDL_ttf-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	curl-devel
@@ -116,7 +115,6 @@ This package contains files providing Ruby bindings for accessing XMM2.
 %prep
 
 %setup -q -n %{name}-%{version}%{funny_version}
-%patch0 -p1
 
 # this plugin has to be ported, disable it with a hack
 perl -pi -e "s|FLAC__seekable_stream_decoder_get_state|FLAC__seekable_stream_decoder_get_state_bla_bla_bla|g" src/plugins/flac/Plugin
