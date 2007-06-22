@@ -117,26 +117,32 @@ This package contains files providing Ruby bindings for accessing XMM2.
 %setup -q -n %{name}-%{version}%{funny_version}
 
 # this plugin has to be ported, disable it with a hack
-perl -pi -e "s|FLAC__seekable_stream_decoder_get_state|FLAC__seekable_stream_decoder_get_state_bla_bla_bla|g" src/plugins/flac/Plugin
+#perl -pi -e "s|FLAC__seekable_stream_decoder_get_state|FLAC__seekable_stream_decoder_get_state_bla_bla_bla|g" src/plugins/flac/Plugin
 
 %build
 
-scons \
-    CCFLAGS="%{optflags}" \
-    CXXFLAGS="%{optflags}" \
-    PREFIX=%{_prefix} \
-    SYSCONFDIR=%{_sysconfdir} \
-    LIBDIR=%{_libdir} \
-    PLUGINDIR=%{_libdir}/%{name} \
-    MANDIR=%{_mandir} \
-    LINKFLAGS="-lm" \
-    RUBYARCHDIR=%{ruby_sitearchdir} \
-    PKGCONFIGDIR=%{_libdir}/pkgconfig
+#scons \
+#    CCFLAGS="%{optflags}" \
+#    CXXFLAGS="%{optflags}" \
+#    PREFIX=%{_prefix} \
+#    SYSCONFDIR=%{_sysconfdir} \
+#    LIBDIR=%{_libdir} \
+#    PLUGINDIR=%{_libdir}/%{name} \
+#    MANDIR=%{_mandir} \
+#    LINKFLAGS="-lm" \
+#    RUBYARCHDIR=%{ruby_sitearchdir} \
+#    PKGCONFIGDIR=%{_libdir}/pkgconfig
+./waf configure \
+	--prefix=%{_prefix} --destdir=%{buildroot} --with-mandir=%{_mandir} \
+	--with-ruby-archdir=%{ruby_sitearchdir} --with-ruby-libdir=%{ruby_sitelibdir} \
+	--with-perl-archdir=%{perl_vendorarch}
+./waf build %{_smp_mflags} --prefix=%{_prefix} --destdir=%{buildroot}
 
 %install
 rm -rf %{buildroot}
 
-scons INSTALLDIR=%{buildroot} install
+#scons INSTALLDIR=%{buildroot} install
+./waf install --prefix=%{_prefix} --destdir=%{buildroot}
 
 # cleanup
 #rm -f %{buildroot}%{_datadir}/xmms2/mind.in.a.box-lament_snipplet.ogg
@@ -150,7 +156,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%attr(0755,root,root) %{_bindir}/sdl-vis
+#%attr(0755,root,root) %{_bindir}/sdl-vis
 %attr(0755,root,root) %{_bindir}/xmms2
 %attr(0755,root,root) %{_bindir}/xmms2-et
 %attr(0755,root,root) %{_bindir}/xmms2-find-avahi
@@ -163,7 +169,7 @@ rm -rf %{buildroot}
 %dir %{_libdir}/xmms2
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_alsa.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_ao.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_curl_http.so
+#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_curl_http.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_daap.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_diskwrite.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_equalizer.so
@@ -184,11 +190,11 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_nulstripper.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_oss.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_replaygain.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_smb.so
+#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_smb.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_wave.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_wma.so
+#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_wma.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_vocoder.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_vorbisfile.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_vorbis.so
 
 %dir %{_datadir}/xmms2
 %dir %{_datadir}/xmms2/scripts
@@ -205,21 +211,22 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root)
 %doc AUTHORS COPYING* INSTALL README TODO
-%attr(0755,root,root) %{_libdir}/libxmmsclient*.so.%{major}*
+%attr(0755,root,root) %{_libdir}/libxmmsclient*.so.*
 
 %files -n %{develname}
 %defattr(-,root,root)
 %{_includedir}/xmms2
 %attr(0755,root,root) %{_libdir}/lib*.so
-%attr(0644,root,root) %{_libdir}/lib*.a
+#%attr(0644,root,root) %{_libdir}/lib*.a
 %attr(0644,root,root) %{_libdir}/pkgconfig/*.pc
 
 %files ruby
 %defattr(-,root,root,-)
+%attr(0755,root,root) %{ruby_sitelibdir}/xmmsclient
 %attr(0755,root,root) %{ruby_sitearchdir}/*.so
 
 %files python
 %defattr(-,root,root,-)
-%attr(0755,root,root) %{python_sitearch}/*.so
-
-
+#%attr(0755,root,root)
+%dir %{python_sitearch}/xmmsclient
+%{python_sitearch}/xmmsclient/*.so
