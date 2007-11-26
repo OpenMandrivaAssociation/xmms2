@@ -21,7 +21,7 @@ BuildRequires:	libGConf2-devel
 BuildRequires:	libao-devel
 BuildRequires:	libavahi-common-devel
 BuildRequires:	libavahi-glib-devel
-BuildRequires:	libboost-devel
+BuildRequires:	boost-devel
 BuildRequires:	libdbus-devel
 BuildRequires:	libdbus-glib-devel
 BuildRequires:	libesound-devel
