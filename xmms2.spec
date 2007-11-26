@@ -7,7 +7,7 @@
 Summary:	XMMS2 is a redesign of the XMMS music player
 Name:		xmms2
 Version:	0.2
-Release:	%mkrel 0.2.%{funny_version}.1
+Release:	%mkrel 0.2.%{funny_version}.2
 Group:          Sound
 License:        GPL
 URL:            http://xmms2.xmms.se/
@@ -89,7 +89,7 @@ Static libraries and header files required for compiling xmms2 plugins.
 %package	python
 Summary:	Python bindings for XMMS2
 Group:		Development/Libraries
-Requires:	%{name}-client = %{version}
+#Requires:	%{name}-client = %{version}
 
 %description	python
 XMMS2 is a redesign of the XMMS music player. It features a client-server
@@ -102,7 +102,7 @@ This package contains files providing Python bindings for accessing XMM2.
 %package	ruby
 Summary:	Ruby bindings for XMMS2
 Group:		Development/Libraries
-Requires:	%{name}-client = %{version}
+#Requires:	%{name}-client = %{version}
 
 %description	ruby
 XMMS2 is a redesign of the XMMS music player. It features a client-server
