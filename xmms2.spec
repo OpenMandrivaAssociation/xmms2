@@ -18,6 +18,7 @@ BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
 BuildRequires:	curl-devel >= 7.11.2
 BuildRequires:	ecore-devel
+BuildRequires:	expat-devel
 BuildRequires:	fftw3-devel
 BuildRequires:	glib2-devel >= 2.8.0
 BuildRequires:	libao-devel
