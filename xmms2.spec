@@ -111,7 +111,7 @@ This package contains files providing Python bindings for accessing XMM2.
 
 %package -n	ruby-%{name}
 Summary:	Ruby bindings for XMMS2
-Group:		Development/Libraries
+Group:		Development/Ruby
 #Requires:	%{name}-client = %{version}
 Provides:	%{name}-ruby = %{version}
 Obsoletes:	%{name}-ruby
