@@ -59,6 +59,7 @@ BuildRequires:	speex-devel
 BuildRequires:	sqlite3-devel >= 3.2.4
 BuildRequires:	swig-devel >= 1.3.25
 BuildRequires:	zlib-devel
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 XMMS2 is a redesign of the XMMS music player. It features a client-server
