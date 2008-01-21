@@ -7,7 +7,7 @@
 Summary:	XMMS2 is a redesign of the XMMS music player
 Name:		xmms2
 Version:	0.4
-Release:	%mkrel 0.%{funny_version}.2
+Release:	%mkrel 0.%{funny_version}.3
 Group:          Sound
 License:        GPL
 URL:            http://xmms2.xmms.se/
