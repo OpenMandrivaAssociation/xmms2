@@ -4,7 +4,7 @@
 %define libname %mklibname xmms2_ %{major}
 %define develname %mklibname -d xmms2
 
-Summary:	XMMS2 is a redesign of the XMMS music player
+Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.4
 Release:	%mkrel 0.%{funny_version}.4
