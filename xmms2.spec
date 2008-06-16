@@ -7,7 +7,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.5
-Release:	%mkrel 0.%{funny_version}.1
+Release:	%mkrel 0.%{funny_version}.2
 Group:          Sound
 License:        GPLv2+
 URL:            http://xmms2.xmms.se/
@@ -15,6 +15,7 @@ Source0:        http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{fun
 Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
 Patch2:		xmms2-0.5-new-ffmpeg-header-location.patch
+Patch3:		xmms2-0.5-prefer-pulse.patch
 BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
 BuildRequires:	avahi-compat-libdns_sd-devel
@@ -146,6 +147,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 %patch0 -p0
 %patch1 -p1
 %patch2 -p0
+%patch3 -p0
 
 # hack...
 libdns_sd="`pkg-config --cflags avahi-compat-libdns_sd | awk '{ print $2 }' | sed -e 's/\-I//'`"
@@ -171,6 +173,7 @@ perl -pi -e "s|-Wall|%{optflags} -Wall|g" \
 ./waf configure \
     --prefix=%{_prefix} \
     --with-libdir=%{_libdir} \
+    --with-pkgconfigdir=%{_libdir}/pkgconfig \
     --destdir=%{buildroot} \
     --with-mandir=%{_mandir} \
     --with-ruby-archdir=%{ruby_sitearchdir} \
@@ -187,10 +190,6 @@ rm -rf %{buildroot}
 
 # cleanup
 #rm -f %{buildroot}%{_datadir}/xmms2/mind.in.a.box-lament_snipplet.ogg
-
-%ifarch x86_64
-mv -f %buildroot/usr/lib/pkgconfig %buildroot%_libdir
-%endif
 
 # fix borked version
 perl -pi -e "s|^Version:.*|Version: %{version} %{funny_version}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
