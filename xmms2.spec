@@ -1,4 +1,4 @@
-%define funny_version DrKosmos
+%define funny_version DrLecter
 
 %define major 0
 %define libname %mklibname xmms2_ %{major}
@@ -6,13 +6,16 @@
 
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
-Version:	0.4
-Release:	%mkrel 0.%{funny_version}.4
+Version:	0.5
+Release:	%mkrel 0.%{funny_version}.1
 Group:          Sound
 License:        GPLv2+
 URL:            http://xmms2.xmms.se/
 Source0:        http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{funny_version}.tar.bz2
 Patch0:		xmms2-lib64_fix.diff
+Patch1:		01_gcc4.3.patch
+Patch2:		xmms2-0.5-new-ffmpeg-header-location.patch
+BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
 BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
@@ -57,7 +60,7 @@ BuildRequires:	SDL_ttf-devel
 BuildRequires:	sidplay2-devel
 BuildRequires:	speex-devel
 BuildRequires:	sqlite3-devel >= 3.2.4
-BuildRequires:	swig-devel >= 1.3.25
+BuildRequires:	swig >= 1.3.25
 BuildRequires:	zlib-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -141,6 +144,8 @@ This package contains files providing Perl bindings for accessing XMM2.
 
 %setup -q -n %{name}-%{version}%{funny_version}
 %patch0 -p0
+%patch1 -p1
+%patch2 -p0
 
 # hack...
 libdns_sd="`pkg-config --cflags avahi-compat-libdns_sd | awk '{ print $2 }' | sed -e 's/\-I//'`"
@@ -162,7 +167,7 @@ perl -pi -e "s|-Wall|%{optflags} -Wall|g" \
     wafadmin/Tools/gcc.py
 
 %build
-
+%setup_compile_flags
 ./waf configure \
     --prefix=%{_prefix} \
     --with-libdir=%{_libdir} \
@@ -182,6 +187,10 @@ rm -rf %{buildroot}
 
 # cleanup
 #rm -f %{buildroot}%{_datadir}/xmms2/mind.in.a.box-lament_snipplet.ogg
+
+%ifarch x86_64
+mv -f %buildroot/usr/lib/pkgconfig %buildroot%_libdir
+%endif
 
 # fix borked version
 perl -pi -e "s|^Version:.*|Version: %{version} %{funny_version}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
@@ -216,7 +225,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_asf.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_asx.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_avcodec.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_avformat.so
+#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_avformat.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_cdda.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_cue.so
 #%attr(0755,root,root) %{_libdir}/xmms2/libxmms_curl_http.so
@@ -226,7 +235,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_equalizer.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_file.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_gnomevfs.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_gvfs.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_ices.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_icymetaint.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_id3v2.so
@@ -256,6 +265,10 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_vorbis.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_xml.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_xspf.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_airplay.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_gme.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_karaoke.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_speex.so
 
 %dir %{_datadir}/xmms2
 %dir %{_datadir}/xmms2/scripts
