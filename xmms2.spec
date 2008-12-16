@@ -297,7 +297,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_diskwrite.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_equalizer.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_file.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
+#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_gvfs.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_ices.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_icymetaint.so
