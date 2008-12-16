@@ -22,7 +22,8 @@ Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
 Patch2:		xmms2-0.5-new-ffmpeg-header-location.patch
 Patch3:		xmms2-0.5-prefer-pulse.patch
-Patch4:		xmms2-avcodec52.patch
+Patch4:		xmms2-0.5-avcodec52.patch
+Patch5:		xmms2-0.5-string-format.diff
 BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
 BuildRequires:	avahi-compat-libdns_sd-devel
@@ -212,6 +213,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 %patch2 -p0
 %patch3 -p0
 %patch4 -p0
+%patch5 -p0
 
 # hack...
 libdns_sd="`pkg-config --cflags avahi-compat-libdns_sd | awk '{ print $2 }' | sed -e 's/\-I//'`"
@@ -257,14 +259,6 @@ rm -rf %{buildroot}
 
 # fix borked version
 perl -pi -e "s|^Version:.*|Version: %{version} %{funny_version}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
 
 %clean
 rm -rf %{buildroot}
