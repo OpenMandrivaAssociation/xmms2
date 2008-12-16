@@ -4,13 +4,19 @@
 %define libname %mklibname xmms2_ %{major}
 %define develname %mklibname -d xmms2
 
+%define libclient %mklibname xmmsclient 4
+%define libclientglib %mklibname xmmsclient-glib 1
+%define libclientecore %mklibname xmmsclient-ecore 1
+%define libclientpp %mklibname xmmsclient++ 3
+%define libclientppglib %mklibname xmmsclient++-glib 1
+
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.5
 Release:	%mkrel 0.%{funny_version}.4
 Group:          Sound
 License:        GPLv2+
-URL:            http://xmms2.xmms.se/
+URL:            http://xmms2.sourceforge.net/
 Source0:        http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{funny_version}.tar.bz2
 Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
@@ -72,11 +78,64 @@ model, allowing multiple (even simultaneous!) user interfaces, both textual
 and graphical. All common audio formats are supported using plugins. On top
 of this, there is a flexible media library to organize your music.
 
-%package -n	%{libname}
-Summary:	Library associated with xmms2, needed for xmms2 and its plugins
-Group:		System/Libraries
+%package -n    %{libclient}
+Summary:       Library associated with xmms2, needed for xmms2 and its plugins
+Group:         System/Libraries
+Obsoletes:     %{libname}
 
-%description -n	%{libname}
+%description -n        %{libclient}
+XMMS2 is a redesign of the XMMS music player. It features a client-server
+model, allowing multiple (even simultaneous!) user interfaces, both textual
+and graphical. All common audio formats are supported using plugins. On top
+of this, there is a flexible media library to organize your music.
+
+This library is mandatory for xmms2 and for all its plugins to run.
+
+%package -n    %{libclientglib}
+Summary:       Library associated with xmms2, needed for xmms2 and its plugins
+Group:         System/Libraries
+Obsoletes:     %{libname}
+
+%description -n        %{libclientglib}
+XMMS2 is a redesign of the XMMS music player. It features a client-server
+model, allowing multiple (even simultaneous!) user interfaces, both textual
+and graphical. All common audio formats are supported using plugins. On top
+of this, there is a flexible media library to organize your music.
+
+This library is mandatory for xmms2 and for all its plugins to run.
+
+%package -n    %{libclientecore}
+Summary:       Library associated with xmms2, needed for xmms2 and its plugins
+Group:         System/Libraries
+Obsoletes:     %{libname}
+
+%description -n        %{libclientecore}
+XMMS2 is a redesign of the XMMS music player. It features a client-server
+model, allowing multiple (even simultaneous!) user interfaces, both textual
+and graphical. All common audio formats are supported using plugins. On top
+of this, there is a flexible media library to organize your music.
+
+This library is mandatory for xmms2 and for all its plugins to run.
+
+%package -n    %{libclientpp}
+Summary:       Library associated with xmms2, needed for xmms2 and its plugins
+Group:         System/Libraries
+Obsoletes:     %{libname}
+
+%description -n        %{libclientpp}
+XMMS2 is a redesign of the XMMS music player. It features a client-server
+model, allowing multiple (even simultaneous!) user interfaces, both textual
+and graphical. All common audio formats are supported using plugins. On top
+of this, there is a flexible media library to organize your music.
+
+This library is mandatory for xmms2 and for all its plugins to run.
+
+%package -n    %{libclientppglib}
+Summary:       Library associated with xmms2, needed for xmms2 and its plugins
+Group:         System/Libraries
+Obsoletes:     %{libname}
+
+%description -n        %{libclientppglib}
 XMMS2 is a redesign of the XMMS music player. It features a client-server
 model, allowing multiple (even simultaneous!) user interfaces, both textual
 and graphical. All common audio formats are supported using plugins. On top
@@ -87,7 +146,11 @@ This library is mandatory for xmms2 and for all its plugins to run.
 %package -n	%{develname}
 Summary:	Development package with static libs and headers
 Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libclient} = %{version}-%{release}
+Requires:	%{libclientglib} = %{version}-%{release}
+Requires:	%{libclientecore} = %{version}-%{release}
+Requires:	%{libclientpp} = %{version}-%{release}
+Requires:	%{libclientppglib} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 Obsoletes:	%{libname}-devel
 
@@ -290,10 +353,25 @@ rm -rf %{buildroot}
 %{_mandir}/man1/xmms2-mdns-avahi.1*
 %{_mandir}/man1/xmms2d.1*
 
-%files -n %{libname}
+%files -n %{libclient}
 %defattr(-,root,root)
-%doc AUTHORS COPYING* INSTALL README TODO
-%attr(0755,root,root) %{_libdir}/libxmmsclient*.so.*
+%attr(0755,root,root) %{_libdir}/libxmmsclient.so.4*
+
+%files -n %{libclientglib}
+%defattr(-,root,root)
+%attr(0755,root,root) %{_libdir}/libxmmsclient-glib.so.1*
+
+%files -n %{libclientecore}
+%defattr(-,root,root)
+%attr(0755,root,root) %{_libdir}/libxmmsclient-ecore.so.1*
+
+%files -n %{libclientpp}
+%defattr(-,root,root)
+%attr(0755,root,root) %{_libdir}/libxmmsclient++.so.3*
+
+%files -n %{libclientppglib}
+%defattr(-,root,root)
+%attr(0755,root,root) %{_libdir}/libxmmsclient++-glib.so.1*
 
 %files -n %{develname}
 %defattr(-,root,root)
