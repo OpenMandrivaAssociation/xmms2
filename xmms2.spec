@@ -16,6 +16,7 @@ Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
 Patch2:		xmms2-0.5-new-ffmpeg-header-location.patch
 Patch3:		xmms2-0.5-prefer-pulse.patch
+Patch4:		xmms2-avcodec52.patch
 BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
 BuildRequires:	avahi-compat-libdns_sd-devel
@@ -142,12 +143,12 @@ of this, there is a flexible media library to organize your music.
 This package contains files providing Perl bindings for accessing XMM2.
 
 %prep
-
 %setup -q -n %{name}-%{version}%{funny_version}
 %patch0 -p0
 %patch1 -p1
 %patch2 -p0
 %patch3 -p0
+%patch4 -p0
 
 # hack...
 libdns_sd="`pkg-config --cflags avahi-compat-libdns_sd | awk '{ print $2 }' | sed -e 's/\-I//'`"
