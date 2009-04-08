@@ -13,7 +13,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.5
-Release:	%mkrel 0.%{funny_version}.7
+Release:	%mkrel 0.%{funny_version}.8
 Group:          Sound
 License:        GPLv2+
 URL:            http://xmms2.sourceforge.net/
@@ -71,6 +71,7 @@ BuildRequires:	speex-devel
 BuildRequires:	sqlite3-devel >= 3.2.4
 BuildRequires:	swig >= 1.3.25
 BuildRequires:	zlib-devel
+BuildRequires:  libflac-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
@@ -326,6 +327,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_gme.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_karaoke.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_speex.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
 
 %dir %{_datadir}/xmms2
 %dir %{_datadir}/xmms2/scripts
