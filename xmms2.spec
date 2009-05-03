@@ -1,4 +1,4 @@
-%define funny_version DrLecter
+%define funny_version DrMattDestruction
 
 %define major 0
 %define libname %mklibname xmms2_ %{major}
@@ -12,17 +12,15 @@
 
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
-Version:	0.5
-Release:	%mkrel 0.%{funny_version}.8
+Version:	0.6
+Release:	%mkrel 0.%{funny_version}.1
 Group:          Sound
 License:        GPLv2+
 URL:            http://xmms2.sourceforge.net/
 Source0:        http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{funny_version}.tar.bz2
 Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
-Patch2:		xmms2-0.5-new-ffmpeg-header-location.patch
-Patch3:		xmms2-0.5-prefer-pulse.patch
-Patch4:		xmms2-0.5-avcodec52.patch
+Patch3:		xmms2-0.6-prefer-pulse.patch
 Patch5:		xmms2-0.5-string-format.diff
 BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
@@ -209,11 +207,8 @@ This package contains files providing Perl bindings for accessing XMM2.
 
 %prep
 %setup -q -n %{name}-%{version}%{funny_version}
-%patch0 -p0
 %patch1 -p1
-%patch2 -p0
 %patch3 -p0
-%patch4 -p0
 %patch5 -p0
 
 # hack...
