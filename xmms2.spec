@@ -4,7 +4,7 @@
 %define libname %mklibname xmms2_ %{major}
 %define develname %mklibname -d xmms2
 
-%define libclient %mklibname xmmsclient 4
+%define libclient %mklibname xmmsclient 5
 %define libclientglib %mklibname xmmsclient-glib 1
 %define libclientecore %mklibname xmmsclient-ecore 1
 %define libclientpp %mklibname xmmsclient++ 3
@@ -49,11 +49,13 @@ BuildRequires:	libmad-devel
 BuildRequires:	libmms-devel
 BuildRequires:	libmodplug-devel
 BuildRequires:	libmpcdec-devel
+BuildRequires:	libmpg123-devel >= 1.5.1
 BuildRequires:	libofa-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libshout-devel
 BuildRequires:	libsmbclient-devel
 BuildRequires:	libvorbis-devel
+BuildRequires:	libvisual-devel
 BuildRequires:	libxml2-devel
 BuildRequires:	mad-devel
 BuildRequires:	openssl-devel
@@ -293,13 +295,12 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_icymetaint.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_id3v2.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_jack.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_lastfmeta.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_lastfm.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_m3u.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_mad.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_mms.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_modplug.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_mp4.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_mpg123.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_musepack.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_normalize.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_null.so
@@ -346,7 +347,7 @@ rm -rf %{buildroot}
 
 %files -n %{libclient}
 %defattr(-,root,root)
-%attr(0755,root,root) %{_libdir}/libxmmsclient.so.4*
+%attr(0755,root,root) %{_libdir}/libxmmsclient.so.5*
 
 %files -n %{libclientglib}
 %defattr(-,root,root)
