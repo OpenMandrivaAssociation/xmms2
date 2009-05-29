@@ -22,7 +22,6 @@ Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
 Patch3:		xmms2-0.6-prefer-pulse.patch
 Patch5:		xmms2-0.5-string-format.diff
-Patch6:		xmms2-0.6-lib64.patch
 BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
 BuildRequires:	avahi-compat-libdns_sd-devel
