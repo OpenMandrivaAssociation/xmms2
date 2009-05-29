@@ -13,7 +13,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.6
-Release:	%mkrel 0.%{funny_version}.3
+Release:	%mkrel 0.%{funny_version}.4
 Group:          Sound
 License:        GPLv2+
 URL:            http://xmms2.sourceforge.net/
@@ -232,6 +232,8 @@ rm -rf %{buildroot}
 
 ./waf install \
     --destdir=%{buildroot}
+
+mv -f %buildroot%_prefix/lib/*.so* %buildroot%_libdir
 
 
 # fix borked version
