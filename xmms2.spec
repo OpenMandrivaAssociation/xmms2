@@ -22,6 +22,7 @@ Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
 Patch3:		xmms2-0.6-prefer-pulse.patch
 Patch5:		xmms2-0.5-string-format.diff
+Patch6:		xmms2-0.6-lib64.patch
 BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
 BuildRequires:	avahi-compat-libdns_sd-devel
@@ -213,30 +214,12 @@ This package contains files providing Perl bindings for accessing XMM2.
 %patch3 -p0
 %patch5 -p0
 
-# hack...
-libdns_sd="`pkg-config --cflags avahi-compat-libdns_sd | awk '{ print $2 }' | sed -e 's/\-I//'`"
-find -type f | xargs perl -pi -e "s|dns_sd\.h|${libdns_sd}dns_sd\.h|g"
-
-# lib64 fixes
-perl -pi -e "s|\"lib\"|\"%{_lib}\"|g" \
-    src/include/xmms/wscript \
-    wafadmin/Tools/python.py \
-    waftools/pkgconfig.py
-
-perl -pi -e "s|\'lib\'|\'%{_lib}\'|g" \
-    src/include/xmms/wscript \
-    waftools/tool.py
-
-# optflags
-perl -pi -e "s|-Wall|%{optflags} -Wall|g" \
-    wafadmin/Tools/g++.py \
-    wafadmin/Tools/gcc.py
-
 %build
 %setup_compile_flags
 ./waf configure \
     --prefix=%{_prefix} \
     --with-libdir=%{_libdir} \
+    --libdir=%{_libdir} \
     --with-pkgconfigdir=%{_libdir}/pkgconfig \
     --destdir=%{buildroot} \
     --with-mandir=%{_mandir} \
@@ -263,38 +246,44 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-#%attr(0755,root,root) %{_bindir}/sdl-vis
+%attr(0755,root,root) %{_bindir}/vistest
+%attr(0755,root,root) %{_bindir}/vistest-fft
 %attr(0755,root,root) %{_bindir}/xmms2
 %attr(0755,root,root) %{_bindir}/xmms2d
 %attr(0755,root,root) %{_bindir}/xmms2-et
 %attr(0755,root,root) %{_bindir}/xmms2-find-avahi
 %attr(0755,root,root) %{_bindir}/xmms2-launcher
+%attr(0755,root,root) %{_bindir}/xmms2-libvisual
 %attr(0755,root,root) %{_bindir}/xmms2-mdns-avahi
-%attr(0755,root,root) %{_bindir}/xmms2-mdns-dnssd
 %attr(0755,root,root) %{_bindir}/xmms2-mlib-updater
+%attr(0755,root,root) %{_bindir}/xmms2-ripper
 
 # plugins
 %dir %{_libdir}/xmms2
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_airplay.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_alsa.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_ao.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_apefile.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_asf.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_asx.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_avcodec.so
-#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_avformat.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_cdda.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_cue.so
-#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_curl_http.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_curl.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_daap.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_diskwrite.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_equalizer.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_file.so
-#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_flv.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_gme.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_gvfs.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_html.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_ices.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_icymetaint.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_id3v2.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_jack.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_karaoke.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_m3u.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_mad.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_mms.so
@@ -313,17 +302,13 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_rss.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_samba.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_sid.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_speex.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_tta.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_wave.so
-#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_wma.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_vocoder.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_vorbis.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_xml.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_xspf.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_airplay.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_gme.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_karaoke.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_speex.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
 
 %dir %{_datadir}/xmms2
 %dir %{_datadir}/xmms2/scripts
@@ -386,7 +371,5 @@ rm -rf %{buildroot}
 
 %files -n perl-%{name}
 %defattr(-,root,root,-)
-%attr(0755,root,root) %dir %{perl_vendorarch}/Audio/XMMSClient
-%attr(0644,root,root) %{perl_vendorarch}/Audio/XMMSClient/*.pm
 %attr(0644,root,root) %{perl_vendorarch}/Audio/*.pm
 %attr(0755,root,root) %{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so
