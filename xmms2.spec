@@ -41,7 +41,6 @@ BuildRequires:	libdbus-glib-devel
 BuildRequires:	libdiscid-devel
 BuildRequires:	libesound-devel
 BuildRequires:	libffmpeg-devel
-#BuildRequires:	libflac-devel
 BuildRequires:	libgamin-devel
 BuildRequires:	libGConf2-devel
 BuildRequires:	libgnome-vfs2-devel
@@ -168,7 +167,6 @@ Static libraries and header files required for compiling xmms2 plugins.
 %package -n	python-%{name}
 Summary:	Python bindings for XMMS2
 Group:		Development/Python
-#Requires:	%{name}-client = %{version}
 Provides:	%{name}-python = %{version}
 Obsoletes:	%{name}-python
 
@@ -183,7 +181,6 @@ This package contains files providing Python bindings for accessing XMM2.
 %package -n	ruby-%{name}
 Summary:	Ruby bindings for XMMS2
 Group:		Development/Ruby
-#Requires:	%{name}-client = %{version}
 Provides:	%{name}-ruby = %{version}
 Obsoletes:	%{name}-ruby
 
@@ -198,7 +195,6 @@ This package contains files providing Ruby bindings for accessing XMM2.
 %package -n	perl-%{name}
 Summary:	Perl bindings for XMMS2
 Group:		Development/Perl
-#Requires:	%{name}-client = %{version}
 
 %description -n	perl-%{name}
 XMMS2 is a redesign of the XMMS music player. It features a client-server
@@ -213,7 +209,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 %patch1 -p1
 %patch3 -p0
 %patch5 -p0
-%if "%_lib" = "lib64"
+%if "%{_lib}" == "lib64"
 %patch6 -p0
 %endif
 
@@ -237,8 +233,6 @@ rm -rf %{buildroot}
 ./waf install \
     --destdir=%{buildroot}
 
-# cleanup
-#rm -f %{buildroot}%{_datadir}/xmms2/mind.in.a.box-lament_snipplet.ogg
 
 # fix borked version
 perl -pi -e "s|^Version:.*|Version: %{version} %{funny_version}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
