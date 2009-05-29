@@ -235,7 +235,7 @@ rm -rf %{buildroot}
 
 %if "%{_lib}" == "lib64"
 mv -f %buildroot%_prefix/lib/*.so* %buildroot%_libdir
-%enidf
+%endif
 
 # fix borked version
 perl -pi -e "s|^Version:.*|Version: %{version} %{funny_version}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
