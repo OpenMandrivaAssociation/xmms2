@@ -23,6 +23,7 @@ Patch1:		01_gcc4.3.patch
 Patch3:		xmms2-0.6-prefer-pulse.patch
 Patch5:		xmms2-0.5-string-format.diff
 Patch6:		xmms2-0.6-lib64.patch
+Patch7:		xmms2-0.6-link-pthread.patch
 BuildRequires:	rpm-manbo-setup-build >= 2-12
 BuildRequires:	alsa-lib-devel
 BuildRequires:	avahi-compat-libdns_sd-devel
@@ -212,6 +213,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 %if "%{_lib}" == "lib64"
 %patch6 -p0
 %endif
+%patch7 -p0
 
 %build
 %setup_compile_flags
