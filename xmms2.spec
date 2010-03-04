@@ -13,7 +13,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.6
-Release:	%mkrel 0.%{funny_version}.10
+Release:	%mkrel 0.%{funny_version}.11
 Group:          Sound
 License:        GPLv2+
 URL:            http://xmms2.sourceforge.net/
@@ -21,7 +21,7 @@ Source0:        http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{fun
 Patch0:		xmms2-lib64_fix.diff
 Patch1:		01_gcc4.3.patch
 Patch3:		xmms2-0.6-prefer-pulse.patch
-Patch5:		xmms2-0.5-string-format.diff
+Patch5:		xmms2-0.6-format-strings.patch
 Patch6:		xmms2-0.6-lib64.patch
 Patch7:		xmms2-0.6-link-pthread.patch
 BuildRequires:	rpm-manbo-setup-build >= 2-12
@@ -61,7 +61,8 @@ BuildRequires:	libxml2-devel
 BuildRequires:	mad-devel
 BuildRequires:	openssl-devel
 BuildRequires:	perl-devel
-BuildRequires:	pkgconfig
+BuildRequires:	readline-devel
+BuildRequires:	libwavpack-devel
 BuildRequires:	pulseaudio-devel
 BuildRequires:	python-devel >= 2.3.0
 BuildRequires:	python-pyrex >= 0.9.3
@@ -247,6 +248,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
+%attr(0755,root,root) %{_bindir}/nyxmms2
 %attr(0755,root,root) %{_bindir}/vistest
 %attr(0755,root,root) %{_bindir}/vistest-fft
 %attr(0755,root,root) %{_bindir}/xmms2
@@ -308,6 +310,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_wave.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_vocoder.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_vorbis.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_wavpack.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_xml.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_xspf.so
 
@@ -325,6 +328,7 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %{_datadir}/pixmaps/xmms2-white-on-black.svg
 %attr(0644,root,root) %{_datadir}/pixmaps/xmms2.svg
 
+%{_mandir}/man1/nyxmms2.1*
 %{_mandir}/man1/xmms2.1*
 %{_mandir}/man1/xmms2-et.1*
 %{_mandir}/man1/xmms2-launcher.1*
