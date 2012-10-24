@@ -1,31 +1,43 @@
-%define funny_version DrMattDestruction
+%define funny_version DrO_o
 
 %define major 0
 %define libname %mklibname xmms2_ %{major}
 %define develname %mklibname -d xmms2
 
-%define libclient %mklibname xmmsclient 5
-%define libclientglib %mklibname xmmsclient-glib 1
-%define libclientecore %mklibname xmmsclient-ecore 1
-%define libclientpp %mklibname xmmsclient++ 3
-%define libclientppglib %mklibname xmmsclient++-glib 1
+# too lazy to fix...
+%define	_disable_ld_no_undefined 1
+
+%define	client_major 6
+%define libclient %mklibname xmmsclient %{client_major}
+%define c_glib_major 1
+%define libclientglib %mklibname xmmsclient-glib %{c_glib_major}
+%define	c_ecore_major 1
+%define libclientecore %mklibname xmmsclient-ecore %{c_ecore_major}
+%define	c_pp_major 4
+%define libclientpp %mklibname xmmsclient++ %{c_pp_major}
+%define	c_pp_glib_major 1
+%define libclientppglib %mklibname xmmsclient++-glib %{c_pp_glib_major}
 
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
-Version:	0.6
-Release:	%mkrel 0.%{funny_version}.11
+Version:	0.8
+Release:	0.%{funny_version}.1
 Group:          Sound
 License:        GPLv2+
 URL:            http://xmms2.sourceforge.net/
 Source0:        http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{funny_version}.tar.bz2
-Patch0:		xmms2-lib64_fix.diff
-Patch1:		01_gcc4.3.patch
-Patch3:		xmms2-0.6-prefer-pulse.patch
-Patch5:		xmms2-0.6-format-strings.patch
-Patch6:		xmms2-0.6-lib64.patch
-Patch7:		xmms2-0.6-link-pthread.patch
-BuildRequires:	rpm-manbo-setup-build >= 2-12
-BuildRequires:	alsa-lib-devel
+Source1:	xmms2-client-launcher.sh
+# Use libdir properly for Fedora multilib
+Patch1:		xmms2-0.8DrO_o-use-libdir.patch
+# Set default output to pulse
+Patch2:		xmms2-0.8DrO_o-pulse-output-default.patch
+# Don't add extra CFLAGS, we're smart enough, thanks.
+Patch4:		xmms2-0.8DrO_o-no-O0.patch
+# More sane versioning
+Patch5:		xmms2-0.8DrO_o-moresaneversioning.patch
+Patch6:		xmms2-0.8DrO_o-remove-dead-libavcodec-function.patch
+
+BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
 BuildRequires:	curl-devel >= 7.11.2
@@ -37,15 +49,15 @@ BuildRequires:	libao-devel
 BuildRequires:	libavahi-common-devel
 BuildRequires:	libavahi-glib-devel
 BuildRequires:	libcdio-devel
-BuildRequires:	libdbus-devel
-BuildRequires:	libdbus-glib-devel
+BuildRequires:	pkgconfig(dbus-1)
+BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	libdiscid-devel
-BuildRequires:	libesound-devel
-BuildRequires:	libffmpeg-devel
-BuildRequires:	libgamin-devel
+BuildRequires:	pkgconfig(esound)
+BuildRequires:	pkgconfig(libavcodec)
+BuildRequires:	pkgconfig(gamin)
 BuildRequires:	libGConf2-devel
-BuildRequires:	libgnome-vfs2-devel
-BuildRequires:	libjack-devel
+BuildRequires:	pkgconfig(gnome-vfs-2.0)
+BuildRequires:	pkgconfig(jack)
 BuildRequires:	libmad-devel
 BuildRequires:	libmms-devel
 BuildRequires:	libmodplug-devel
@@ -69,10 +81,10 @@ BuildRequires:	python-pyrex >= 0.9.3
 BuildRequires:	ruby-devel >= 1.8
 BuildRequires:	SDL_ttf-devel
 BuildRequires:	sidplay2-devel
-BuildRequires:	speex-devel
+BuildRequires:	pkgconfig(speex)
 BuildRequires:	sqlite3-devel >= 3.2.4
 BuildRequires:	swig >= 1.3.25
-BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:  libflac-devel
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -208,58 +220,62 @@ This package contains files providing Perl bindings for accessing XMM2.
 
 %prep
 %setup -q -n %{name}-%{version}%{funny_version}
-%patch1 -p1
-%patch3 -p0
-%patch5 -p0
-%if "%{_lib}" == "lib64"
-%patch6 -p0
-%endif
-%patch7 -p0
+%patch1 -p1 -b .plugins-use-libdir~
+%patch2 -p1 -b .default-output-pulse~
+%patch4 -p1 -b .noO0~
+%patch5 -p1 -b .versionsanity~
+%patch6 -p1 -b .ffmpeg~
 
 %build
+%global optflags %{optflags} -Os
 %setup_compile_flags
+export CPPFLAGS="%{optflags}"
+export LIBDIR="%{_libdir}"
+export PYTHONDIR="%{python_sitearch}"
 ./waf configure \
     --prefix=%{_prefix} \
-    --with-libdir=%{_libdir} \
+    --libdir=%{_libdir} \
     --with-pkgconfigdir=%{_libdir}/pkgconfig \
-    --destdir=%{buildroot} \
-    --with-mandir=%{_mandir} \
-    --with-ruby-archdir=%{ruby_sitearchdir} \
-    --with-ruby-libdir=%{ruby_sitelibdir} \
+    --with-ruby-archdir=%{ruby_vendorarchdir} \
+    --with-ruby-libdir=%{ruby_vendorlibdir} \
     --with-perl-archdir=%{perl_vendorarch}
 
-./waf build %{_smp_mflags}
+# parallel build occationally breaks..
+./waf build -v %{_smp_mflags} || ./waf build -v
 
 %install
-rm -rf %{buildroot}
+./waf install --destdir=%{buildroot}
 
-./waf install \
-    --destdir=%{buildroot}
+# exec flags for debuginfo
+chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* %{buildroot}%{python_sitearch}/xmmsclient/xmmsapi.so \
+	%{buildroot}%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so %{buildroot}%{ruby_vendorarchdir}/xmmsclient_*.so
 
-%if "%{_lib}" == "lib64"
-mv -f %buildroot%_prefix/lib/*.so* %buildroot%_libdir
-%endif
+# Convert to utf-8
+for i in %{buildroot}%{_mandir}/man1/*.gz; do
+	gunzip $i;
+done
+for i in %{buildroot}%{_mandir}/man1/*.1 xmms2-0.8DrO_o.ChangeLog; do
+	iconv -o $i.iso88591 -f iso88591 -t utf8 $i
+	mv $i.iso88591 $i
+done
 
-# fix borked version
-perl -pi -e "s|^Version:.*|Version: %{version} %{funny_version}|g" %{buildroot}%{_libdir}/pkgconfig/*.pc
+install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 
-%clean
-rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root,-)
 %attr(0755,root,root) %{_bindir}/nyxmms2
-%attr(0755,root,root) %{_bindir}/vistest
-%attr(0755,root,root) %{_bindir}/vistest-fft
+#%attr(0755,root,root) %{_bindir}/vistest
+#%attr(0755,root,root) %{_bindir}/vistest-fft
 %attr(0755,root,root) %{_bindir}/xmms2
 %attr(0755,root,root) %{_bindir}/xmms2d
+%attr(0755,root,root) %{_bindir}/xmms2-client-launcher.sh
 %attr(0755,root,root) %{_bindir}/xmms2-et
 %attr(0755,root,root) %{_bindir}/xmms2-find-avahi
 %attr(0755,root,root) %{_bindir}/xmms2-launcher
-%attr(0755,root,root) %{_bindir}/xmms2-libvisual
+#%attr(0755,root,root) %{_bindir}/xmms2-libvisual
 %attr(0755,root,root) %{_bindir}/xmms2-mdns-avahi
 %attr(0755,root,root) %{_bindir}/xmms2-mlib-updater
-%attr(0755,root,root) %{_bindir}/xmms2-ripper
+#%attr(0755,root,root) %{_bindir}/xmms2-ripper
 
 # plugins
 %dir %{_libdir}/xmms2
@@ -279,7 +295,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_file.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_flac.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_flv.so
-%attr(0755,root,root) %{_libdir}/xmms2/libxmms_gme.so
+#%attr(0755,root,root) %{_libdir}/xmms2/libxmms_gme.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_gvfs.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_html.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_ices.so
@@ -305,6 +321,7 @@ rm -rf %{buildroot}
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_rss.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_samba.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_sid.so
+%attr(0755,root,root) %{_libdir}/xmms2/libxmms_sndfile.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_speex.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_tta.so
 %attr(0755,root,root) %{_libdir}/xmms2/libxmms_wave.so
@@ -328,7 +345,7 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %{_datadir}/pixmaps/xmms2-white-on-black.svg
 %attr(0644,root,root) %{_datadir}/pixmaps/xmms2.svg
 
-%{_mandir}/man1/nyxmms2.1*
+#%{_mandir}/man1/nyxmms2.1*
 %{_mandir}/man1/xmms2.1*
 %{_mandir}/man1/xmms2-et.1*
 %{_mandir}/man1/xmms2-launcher.1*
@@ -337,23 +354,23 @@ rm -rf %{buildroot}
 
 %files -n %{libclient}
 %defattr(-,root,root)
-%attr(0755,root,root) %{_libdir}/libxmmsclient.so.5*
+%attr(0755,root,root) %{_libdir}/libxmmsclient.so.%{client_major}*
 
 %files -n %{libclientglib}
 %defattr(-,root,root)
-%attr(0755,root,root) %{_libdir}/libxmmsclient-glib.so.1*
+%attr(0755,root,root) %{_libdir}/libxmmsclient-glib.so.%{c_glib_major}*
 
 %files -n %{libclientecore}
 %defattr(-,root,root)
-%attr(0755,root,root) %{_libdir}/libxmmsclient-ecore.so.1*
+%attr(0755,root,root) %{_libdir}/libxmmsclient-ecore.so.%{c_ecore_major}*
 
 %files -n %{libclientpp}
 %defattr(-,root,root)
-%attr(0755,root,root) %{_libdir}/libxmmsclient++.so.3*
+%attr(0755,root,root) %{_libdir}/libxmmsclient++.so.%{c_pp_major}*
 
 %files -n %{libclientppglib}
 %defattr(-,root,root)
-%attr(0755,root,root) %{_libdir}/libxmmsclient++-glib.so.1*
+%attr(0755,root,root) %{_libdir}/libxmmsclient++-glib.so.%{c_pp_glib_major}*
 
 %files -n %{develname}
 %defattr(-,root,root)
@@ -363,10 +380,10 @@ rm -rf %{buildroot}
 
 %files -n ruby-%{name}
 %defattr(-,root,root,-)
-%attr(0755,root,root) %dir %{ruby_sitelibdir}/xmmsclient
-%attr(0644,root,root) %{ruby_sitelibdir}/xmmsclient/*.rb
-%attr(0755,root,root) %{ruby_sitearchdir}/*.so
-%attr(0644,root,root) %{ruby_sitelibdir}/xmmsclient.rb
+%attr(0755,root,root) %dir %{ruby_vendorlibdir}/xmmsclient
+%attr(0644,root,root) %{ruby_vendorlibdir}/xmmsclient/*.rb
+%attr(0755,root,root) %{ruby_vendorarchdir}/*.so
+%attr(0644,root,root) %{ruby_vendorlibdir}/xmmsclient.rb
 
 %files -n python-%{name}
 %defattr(-,root,root,-)
@@ -376,5 +393,10 @@ rm -rf %{buildroot}
 
 %files -n perl-%{name}
 %defattr(-,root,root,-)
+%dir %{perl_vendorarch}/Audio
 %attr(0644,root,root) %{perl_vendorarch}/Audio/*.pm
+%{perl_vendorarch}/Audio/*.pod
+%dir %{perl_vendorarch}/Audio/XMMSClient
+%{perl_vendorarch}/Audio/XMMSClient/*.pod
+%{perl_vendorarch}/Audio/XMMSClient/*.pm
 %attr(0755,root,root) %{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so
