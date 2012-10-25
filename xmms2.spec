@@ -226,8 +226,6 @@ This package contains files providing Perl bindings for accessing XMM2.
 %patch6 -p1 -b .ffmpeg~
 
 %build
-# lowering optimization level bbecause of gcc segfault with -O2
-%global optflags %{optflags} -Os
 %setup_compile_flags
 export CPPFLAGS="%{optflags}"
 export LIBDIR="%{_libdir}"
