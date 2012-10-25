@@ -40,52 +40,51 @@ Patch6:		xmms2-0.8DrO_o-remove-dead-libavcodec-function.patch
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
-BuildRequires:	curl-devel >= 7.11.2
-BuildRequires:	ecore-devel
-BuildRequires:	expat-devel
-BuildRequires:	fftw3-devel
-BuildRequires:	glib2-devel >= 2.8.0
-BuildRequires:	libao-devel
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(ecore)
+BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(fftw3)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(ao)
 BuildRequires:	libavahi-common-devel
-BuildRequires:	libavahi-glib-devel
-BuildRequires:	libcdio-devel
+BuildRequires:	pkgconfig(avahi-glib)
+BuildRequires:	pkgconfig(libcdio)
 BuildRequires:	pkgconfig(dbus-1)
 BuildRequires:	pkgconfig(dbus-glib-1)
-BuildRequires:	libdiscid-devel
+BuildRequires:	pkgconfig(libdiscid)
 BuildRequires:	pkgconfig(esound)
 BuildRequires:	pkgconfig(libavcodec)
 BuildRequires:	pkgconfig(gamin)
-BuildRequires:	libGConf2-devel
+BuildRequires:	pkgconfig(gconf-2.0)
 BuildRequires:	pkgconfig(gnome-vfs-2.0)
 BuildRequires:	pkgconfig(jack)
-BuildRequires:	libmad-devel
-BuildRequires:	libmms-devel
-BuildRequires:	libmodplug-devel
+BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(libmms)
+BuildRequires:	pkgconfig(libmodplug)
 BuildRequires:	libmpcdec-devel
-BuildRequires:	libmpg123-devel >= 1.5.1
-BuildRequires:	libofa-devel
-BuildRequires:	libsamplerate-devel
-BuildRequires:	libshout-devel
-BuildRequires:	libsmbclient-devel
-BuildRequires:	libvorbis-devel
-BuildRequires:	libvisual-devel
-BuildRequires:	libxml2-devel
-BuildRequires:	mad-devel
-BuildRequires:	openssl-devel
+BuildRequires:	pkgconfig(libmpg123-devel)
+BuildRequires:	pkgconfig(libofa)
+BuildRequires:	pkgconfig(samplerate)
+BuildRequires:	pkgconfig(shout)
+BuildRequires:	pkgconfig(smbclient)
+BuildRequires:	pkgconfig(vorbis)
+BuildRequires:	pkgconfig(libvisual-4.0)
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	pkgconfig(openssl)
 BuildRequires:	perl-devel
 BuildRequires:	readline-devel
-BuildRequires:	libwavpack-devel
-BuildRequires:	pulseaudio-devel
-BuildRequires:	python-devel >= 2.3.0
+BuildRequires:	pkgconfig(wavpack)
+BuildRequires:	pkgconfig(pulse)
+BuildRequires:	pkgconfig(python-2.7)
 BuildRequires:	python-pyrex >= 0.9.3
-BuildRequires:	ruby-devel >= 1.8
-BuildRequires:	SDL_ttf-devel
-BuildRequires:	sidplay2-devel
+BuildRequires:	pkgconfig(ruby-1.9)
+BuildRequires:	pkgconfig(SDL_ttf)
+BuildRequires:	pkgconfig(libsidplay2)
 BuildRequires:	pkgconfig(speex)
-BuildRequires:	sqlite3-devel >= 3.2.4
+BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	swig >= 1.3.25
 BuildRequires:	pkgconfig(zlib)
-BuildRequires:  libflac-devel
+BuildRequires:	pkgconfig(flac)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
