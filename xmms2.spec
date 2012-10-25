@@ -88,6 +88,8 @@ BuildRequires:	pkgconfig(flac)
 BuildRequires:	libgme-devel
 # do actually require 2.3.0 from cvs, but sometime later, whenever.. :p
 BuildRequires:	pkgconfig(sc68)
+BuildRequires:	pkgconfig(sndfile)
+BuildRequires:	pkgconfig(smbclient)
 
 %description
 XMMS2 is a redesign of the XMMS music player. It features a client-server
