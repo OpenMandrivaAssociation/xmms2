@@ -85,6 +85,9 @@ BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	swig >= 1.3.25
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(flac)
+BuildRequires:	libgme-devel
+# do actually require 2.3.0 from cvs, but sometime later, whenever.. :p
+BuildRequires:	pkgconfig(sc68)
 
 %description
 XMMS2 is a redesign of the XMMS music player. It features a client-server
@@ -291,7 +294,7 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_libdir}/xmms2/libxmms_file.so
 %{_libdir}/xmms2/libxmms_flac.so
 %{_libdir}/xmms2/libxmms_flv.so
-#%{_libdir}/xmms2/libxmms_gme.so
+%{_libdir}/xmms2/libxmms_gme.so
 %{_libdir}/xmms2/libxmms_gvfs.so
 %{_libdir}/xmms2/libxmms_html.so
 %{_libdir}/xmms2/libxmms_ices.so
