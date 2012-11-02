@@ -1,4 +1,4 @@
-%define funny_version DrO_o
+%define codename DrO_o
 
 %define	major	0
 %define	libname %mklibname xmms2_ %{major}
@@ -21,11 +21,11 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.8
-Release:	0.%{funny_version}.1
+Release:	1
 Group:		Sound
 License:	GPLv2+
 URL:		http://xmms2.sourceforge.net/
-Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{funny_version}.tar.bz2
+Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{codename}.tar.bz2
 Source1:	xmms2-client-launcher.sh
 # Use libdir properly for Fedora multilib
 Patch1:		xmms2-0.8DrO_o-use-libdir.patch
@@ -219,7 +219,7 @@ of this, there is a flexible media library to organize your music.
 This package contains files providing Perl bindings for accessing XMM2.
 
 %prep
-%setup -q -n %{name}-%{version}%{funny_version}
+%setup -q -n %{name}-%{version}%{codename}
 %patch1 -p1 -b .plugins-use-libdir~
 %patch2 -p1 -b .default-output-pulse~
 %patch4 -p1 -b .noO0~
