@@ -1,0 +1,10 @@
+--- xmms2-0.8DrO_o/src/plugins/avcodec/avcodec.c.ffmpeg~	2012-10-24 15:20:56.061916896 +0200
++++ xmms2-0.8DrO_o/src/plugins/avcodec/avcodec.c	2012-10-24 15:21:36.710501841 +0200
+@@ -134,7 +134,6 @@ xmms_avcodec_init (xmms_xform_t *xform)
+ 
+ 	xmms_xform_private_data_set (xform, data);
+ 
+-	avcodec_init ();
+ 	avcodec_register_all ();
+ 
+ 	mimetype = xmms_xform_indata_get_str (xform,
