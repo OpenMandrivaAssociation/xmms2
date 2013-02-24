@@ -317,7 +317,7 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_libdir}/xmms2/libxmms_pulse.so
 %{_libdir}/xmms2/libxmms_replaygain.so
 %{_libdir}/xmms2/libxmms_rss.so
-%{_libdir}/xmms2/libxmms_samba.so
+#%{_libdir}/xmms2/libxmms_samba.so
 %{_libdir}/xmms2/libxmms_sid.so
 %{_libdir}/xmms2/libxmms_sndfile.so
 %{_libdir}/xmms2/libxmms_speex.so
