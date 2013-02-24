@@ -46,7 +46,7 @@ BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(fftw3)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(ao)
-BuildRequires:	libavahi-common-devel
+BuildRequires:	avahi-common-devel
 BuildRequires:	pkgconfig(avahi-glib)
 BuildRequires:	pkgconfig(libcdio)
 BuildRequires:	pkgconfig(dbus-1)
