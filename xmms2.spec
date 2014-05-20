@@ -21,7 +21,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.8
-Release:	3
+Release:	4
 Group:		Sound
 License:	GPLv2+
 URL:		http://xmms2.sourceforge.net/
@@ -94,7 +94,7 @@ BuildRequires:	pkgconfig(wavpack)
 BuildRequires:	pkgconfig(libpulse)
 BuildRequires:	pkgconfig(python-2.7)
 BuildRequires:	python-pyrex >= 0.9.3
-BuildRequires:	pkgconfig(ruby-1.9)
+BuildRequires:	pkgconfig(ruby)
 BuildRequires:	pkgconfig(SDL_ttf)
 BuildRequires:	pkgconfig(libsidplay2)
 BuildRequires:	pkgconfig(speex)
