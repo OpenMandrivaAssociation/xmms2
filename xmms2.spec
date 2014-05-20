@@ -37,6 +37,23 @@ Patch4:		xmms2-0.8DrO_o-no-O0.patch
 Patch5:		xmms2-0.8DrO_o-moresaneversioning.patch
 Patch6:		xmms2-0.8DrO_o-remove-dead-libavcodec-function.patch
 
+Patch10:	bp-fix-avcodec-init.patch
+Patch11:	bp-fix-alloc-context.patch
+Patch12:	bp-fix-missing-include.patch
+Patch13:	bp-Get-rid-of-superfluous-argument-self.patch
+Patch14:	spelling-error.patch
+Patch15:	linker-flags.patch
+Patch16:	plugin-tta-segment-with-startms.patch
+Patch17:	nycli-man-page-symlink.patch
+Patch18:	rpath.patch
+Patch19:	fix-manpage-errors.patch
+Patch20:	fix-typos.patch
+#Patch21:	hardening-flags.patch
+Patch22:	fix-libmodplug-include.patch
+Patch23:	samba-with-pkg-cfg.patch
+#Patch24:	ruby2-multiarch.patch
+Patch25:	libav10.patch
+
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
@@ -89,6 +106,7 @@ BuildRequires:	libgme-devel
 # do actually require 2.3.0 from cvs, but sometime later, whenever.. :p
 BuildRequires:	pkgconfig(sc68)
 BuildRequires:	pkgconfig(sndfile)
+BuildRequires:	pkgconfig(samba-util)
 
 %description
 XMMS2 is a redesign of the XMMS music player. It features a client-server
@@ -220,11 +238,13 @@ This package contains files providing Perl bindings for accessing XMM2.
 
 %prep
 %setup -q -n %{name}-%{version}%{codename}
-%patch1 -p1 -b .plugins-use-libdir~
-%patch2 -p1 -b .default-output-pulse~
-%patch4 -p1 -b .noO0~
-%patch5 -p1 -b .versionsanity~
-%patch6 -p1 -b .ffmpeg~
+%apply_patches
+
+# Convert to utf-8
+for i in `find src -name \*.1` xmms2-0.8DrO_o.ChangeLog; do
+	iconv -o $i.iso88591 -f iso88591 -t utf8 $i
+	mv $i.iso88591 $i
+done
 
 %build
 %setup_compile_flags
@@ -249,14 +269,6 @@ export PYTHONDIR="%{python_sitearch}"
 chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* %{buildroot}%{python_sitearch}/xmmsclient/xmmsapi.so \
 	%{buildroot}%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so %{buildroot}%{ruby_vendorarchdir}/xmmsclient_*.so
 
-# Convert to utf-8
-for i in %{buildroot}%{_mandir}/man1/*.gz; do
-	gunzip $i;
-done
-for i in %{buildroot}%{_mandir}/man1/*.1 xmms2-0.8DrO_o.ChangeLog; do
-	iconv -o $i.iso88591 -f iso88591 -t utf8 $i
-	mv $i.iso88591 $i
-done
 
 install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 
@@ -317,8 +329,8 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_libdir}/xmms2/libxmms_pulse.so
 %{_libdir}/xmms2/libxmms_replaygain.so
 %{_libdir}/xmms2/libxmms_rss.so
-#%{_libdir}/xmms2/libxmms_samba.so
-%{_libdir}/xmms2/libxmms_sid.so
+%{_libdir}/xmms2/libxmms_samba.so
+#%{_libdir}/xmms2/libxmms_sid.so
 %{_libdir}/xmms2/libxmms_sndfile.so
 %{_libdir}/xmms2/libxmms_speex.so
 %{_libdir}/xmms2/libxmms_tta.so
@@ -343,7 +355,7 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_datadir}/pixmaps/xmms2-white-on-black.svg
 %{_datadir}/pixmaps/xmms2.svg
 
-#%{_mandir}/man1/nyxmms2.1*
+%{_mandir}/man1/nyxmms2.1*
 %{_mandir}/man1/xmms2.1*
 %{_mandir}/man1/xmms2-et.1*
 %{_mandir}/man1/xmms2-launcher.1*
