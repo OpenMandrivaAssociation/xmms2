@@ -21,7 +21,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.8
-Release:	2
+Release:	3
 Group:		Sound
 License:	GPLv2+
 URL:		http://xmms2.sourceforge.net/
