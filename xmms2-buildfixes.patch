@@ -1,0 +1,24 @@
+diff -up xmms2-0.8DrO_o/src/plugins/cdda/cdda.c.omv~ xmms2-0.8DrO_o/src/plugins/cdda/cdda.c
+--- xmms2-0.8DrO_o/src/plugins/cdda/cdda.c.omv~	2019-03-21 01:23:18.024137573 +0100
++++ xmms2-0.8DrO_o/src/plugins/cdda/cdda.c	2019-03-21 01:24:02.631776853 +0100
+@@ -18,7 +18,7 @@
+ #include "xmms/xmms_log.h"
+ #include "xmms/xmms_util.h"
+ 
+-#include <cdio/cdda.h>
++#include <cdio/paranoia/cdda.h>
+ #include <cdio/cdio.h>
+ #include <cdio/logging.h>
+ #include <discid/discid.h>
+diff -up xmms2-0.8DrO_o/src/include/xmmsclient/xmmsclient++/coll.h.omv~ xmms2-0.8DrO_o/src/include/xmmsclient/xmmsclient++/coll.h
+--- xmms2-0.8DrO_o/src/include/xmmsclient/xmmsclient++/coll.h.omv~	2019-03-21 01:31:48.063469912 +0100
++++ xmms2-0.8DrO_o/src/include/xmmsclient/xmmsclient++/coll.h	2019-03-21 01:33:13.391700065 +0100
+@@ -612,7 +612,7 @@ namespace Xmms
+ 
+ 		template< typename keyT, typename valT >
+ 		AbstractElement< keyT, valT >::AbstractElement( const Coll& coll, keyT index )
+-			: coll_ (coll), index_( index )
++			: coll_ (const_cast<Coll&>(coll)), index_( index )
+ 		{
+ 			xmmsv_coll_ref( coll_.getColl() );
+ 		}

@@ -26,33 +26,38 @@ Group:		Sound
 License:	GPLv2+
 URL:		http://xmms2.sourceforge.net/
 Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{codename}.tar.bz2
-Source1:	xmms2-client-launcher.sh
+Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-launcher.sh
 # Use libdir properly for Fedora multilib
-Patch1:		xmms2-0.8DrO_o-use-libdir.patch
+Patch1:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-use-libdir.patch
 # Set default output to pulse
-Patch2:		xmms2-0.8DrO_o-pulse-output-default.patch
+Patch2:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-pulse-output-default.patch
 # Don't add extra CFLAGS, we're smart enough, thanks.
-Patch4:		xmms2-0.8DrO_o-no-O0.patch
+Patch4:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-no-O0.patch
 # More sane versioning
-Patch5:		xmms2-0.8DrO_o-moresaneversioning.patch
-Patch6:		xmms2-0.8DrO_o-remove-dead-libavcodec-function.patch
+Patch5:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-moresaneversioning.patch
+Patch6:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-xsubpp-fix.patch
+Patch7:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-libmodplug-pkgconfig-change.patch
+Patch8:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-vorbis-pkgconfig-libs.patch
+Patch9:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-ruby22-remove-deprecated-usage.patch
+Patch10:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-openssl-1.1.patch
+Patch15:	xmms2-0.8DrO_o-remove-dead-libavcodec-function.patch
 
-Patch10:	bp-fix-avcodec-init.patch
-Patch11:	bp-fix-alloc-context.patch
-Patch12:	bp-fix-missing-include.patch
-Patch13:	bp-Get-rid-of-superfluous-argument-self.patch
-Patch14:	spelling-error.patch
-Patch15:	linker-flags.patch
-Patch16:	plugin-tta-segment-with-startms.patch
-Patch17:	nycli-man-page-symlink.patch
-Patch18:	rpath.patch
-Patch19:	fix-manpage-errors.patch
-Patch20:	fix-typos.patch
-#Patch21:	hardening-flags.patch
-Patch22:	fix-libmodplug-include.patch
-Patch23:	samba-with-pkg-cfg.patch
-#Patch24:	ruby2-multiarch.patch
-Patch25:	libav10.patch
+Patch20:	bp-fix-avcodec-init.patch
+Patch21:	bp-fix-alloc-context.patch
+Patch22:	bp-fix-missing-include.patch
+Patch23:	bp-Get-rid-of-superfluous-argument-self.patch
+Patch24:	spelling-error.patch
+Patch25:	linker-flags.patch
+Patch26:	plugin-tta-segment-with-startms.patch
+Patch27:	nycli-man-page-symlink.patch
+Patch28:	rpath.patch
+Patch29:	fix-manpage-errors.patch
+Patch30:	fix-typos.patch
+#Patch31:	hardening-flags.patch
+Patch33:	samba-with-pkg-cfg.patch
+#Patch34:	ruby2-multiarch.patch
+Patch35:	libav10.patch
+Patch36:	xmms2-buildfixes.patch
 
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
@@ -88,16 +93,17 @@ BuildRequires:	pkgconfig(libvisual-0.4)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	perl-devel
+BuildRequires:	perl(Pod::Parser)
 BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(wavpack)
 BuildRequires:	pkgconfig(libpulse)
-BuildRequires:	pkgconfig(python-2.7)
-BuildRequires:	python-pyrex >= 0.9.3
+BuildRequires:	pkgconfig(python2)
 BuildRequires:	pkgconfig(ruby)
 BuildRequires:	pkgconfig(SDL_ttf)
 BuildRequires:	pkgconfig(libsidplay2)
 BuildRequires:	pkgconfig(speex)
 BuildRequires:	pkgconfig(sqlite3)
+BuildRequires:	faad2-devel
 BuildRequires:	swig >= 1.3.25
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(flac)
@@ -197,12 +203,13 @@ of this, there is a flexible media library to organize your music.
 
 Static libraries and header files required for compiling xmms2 plugins.
 
-%package -n	python-%{name}
+%package -n	python2-%{name}
 Summary:	Python bindings for XMMS2
 Group:		Development/Python
 %rename		%{name}-python
+%rename		python-%{name}
 
-%description -n	python-%{name}
+%description -n	python2-%{name}
 XMMS2 is a redesign of the XMMS music player. It features a client-server
 model, allowing multiple (even simultaneous!) user interfaces, both textual
 and graphical. All common audio formats are supported using plugins. On top
@@ -237,6 +244,9 @@ This package contains files providing Perl bindings for accessing XMM2.
 
 %prep
 %setup -q -n %{name}-%{version}%{codename}
+# Unpack waflib files hidden inside the waf script.
+# (Patch 9 needs to patch them...)
+python2 waf --help &>/dev/null
 %apply_patches
 
 # Convert to utf-8
@@ -249,23 +259,27 @@ done
 %setup_compile_flags
 export CPPFLAGS="%{optflags}"
 export LIBDIR="%{_libdir}"
-export PYTHONDIR="%{python_sitearch}"
-./waf configure \
+export PYTHONDIR="%{py2_platsitedir}"
+ln -s %{_bindir}/python2 python
+export PATH=`pwd`:$PATH
+python2 ./waf configure \
     --prefix=%{_prefix} \
     --libdir=%{_libdir} \
-    --with-pkgconfigdir=%{_libdir}/pkgconfig \
-    --with-ruby-archdir=%{ruby_vendorarchdir} \
     --with-ruby-libdir=%{ruby_vendorlibdir} \
-    --with-perl-archdir=%{perl_vendorarch}
+    --with-ruby-archdir=%{ruby_vendorarchdir} \
+    --with-pkgconfigdir=%{_libdir}/pkgconfig \
+    --with-perl-archdir=%{perl_vendorarch} \
+    --no-cython
 
 # parallel build occationally breaks..
-./waf build -v %{_smp_mflags} || ./waf build -v
+python2 ./waf build -v %{_smp_mflags} || python2 ./waf build -v
 
 %install
-./waf install --destdir=%{buildroot}
+export PATH=`pwd`:$PATH
+python2 ./waf install --destdir=%{buildroot}
 
 # exec flags for debuginfo
-chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* %{buildroot}%{python_sitearch}/xmmsclient/xmmsapi.so \
+chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* %{buildroot}%{py2_platsitedir}/xmmsclient/xmmsapi.so \
 	%{buildroot}%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so %{buildroot}%{ruby_vendorarchdir}/xmmsclient_*.so
 
 
@@ -301,6 +315,7 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_libdir}/xmms2/libxmms_daap.so
 %{_libdir}/xmms2/libxmms_diskwrite.so
 %{_libdir}/xmms2/libxmms_equalizer.so
+%{_libdir}/xmms2/libxmms_faad.so
 %{_libdir}/xmms2/libxmms_file.so
 %{_libdir}/xmms2/libxmms_flac.so
 %{_libdir}/xmms2/libxmms_flv.so
@@ -387,10 +402,10 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{ruby_vendorarchdir}/*.so
 %{ruby_vendorlibdir}/xmmsclient.rb
 
-%files -n python-%{name}
-%dir %{python_sitearch}/xmmsclient
-%{python_sitearch}/xmmsclient/*.so
-%{python_sitearch}/xmmsclient/*.py
+%files -n python2-%{name}
+%dir %{py2_platsitedir}/xmmsclient
+%{py2_platsitedir}/xmmsclient/*.so
+%{py2_platsitedir}/xmmsclient/*.py*
 
 %files -n perl-%{name}
 %dir %{perl_vendorarch}/Audio
