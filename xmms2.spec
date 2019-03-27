@@ -103,7 +103,7 @@ BuildRequires:	pkgconfig(SDL_ttf)
 BuildRequires:	pkgconfig(libsidplay2)
 BuildRequires:	pkgconfig(speex)
 BuildRequires:	pkgconfig(sqlite3)
-BuildRequires:	faad2-devel
+#BuildRequires:	faad2-devel
 BuildRequires:	swig >= 1.3.25
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(flac)
