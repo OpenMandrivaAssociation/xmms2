@@ -309,13 +309,13 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_libdir}/xmms2/libxmms_asf.so
 %{_libdir}/xmms2/libxmms_asx.so
 %{_libdir}/xmms2/libxmms_avcodec.so
-%{_libdir}/xmms2/libxmms_cdda.so
+#{_libdir}/xmms2/libxmms_cdda.so
 %{_libdir}/xmms2/libxmms_cue.so
 %{_libdir}/xmms2/libxmms_curl.so
 %{_libdir}/xmms2/libxmms_daap.so
 %{_libdir}/xmms2/libxmms_diskwrite.so
 %{_libdir}/xmms2/libxmms_equalizer.so
-%{_libdir}/xmms2/libxmms_faad.so
+#{_libdir}/xmms2/libxmms_faad.so
 %{_libdir}/xmms2/libxmms_file.so
 %{_libdir}/xmms2/libxmms_flac.so
 %{_libdir}/xmms2/libxmms_flv.so
