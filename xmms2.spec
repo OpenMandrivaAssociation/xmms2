@@ -247,7 +247,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 # Unpack waflib files hidden inside the waf script.
 # (Patch 9 needs to patch them...)
 python2 waf --help &>/dev/null
-%apply_patches
+%autopatch -p1
 
 # Convert to utf-8
 for i in `find src -name \*.1` xmms2-0.8DrO_o.ChangeLog; do
