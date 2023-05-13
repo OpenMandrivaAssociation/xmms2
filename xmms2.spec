@@ -101,7 +101,7 @@ BuildRequires:	pkgconfig(libpulse)
 BuildRequires:	pkgconfig(python2)
 BuildRequires:	pkgconfig(ruby)
 BuildRequires:	pkgconfig(SDL_ttf)
-BuildRequires:	pkgconfig(libsidplay2)
+#BuildRequires:	pkgconfig(libsidplay2)
 BuildRequires:	pkgconfig(speex)
 BuildRequires:	pkgconfig(sqlite3)
 #BuildRequires:	faad2-devel
@@ -110,7 +110,7 @@ BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	libgme-devel
 # do actually require 2.3.0 from cvs, but sometime later, whenever.. :p
-BuildRequires:	pkgconfig(sc68)
+#BuildRequires:	pkgconfig(sc68)
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(samba-util)
 
