@@ -28,37 +28,9 @@ URL:		http://xmms2.sourceforge.net/
 Source0:	https://github.com/xmms2/xmms2-devel/releases/download/%{version}/xmms2-%{version}.tar.xz
 #Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{codename}.tar.bz2
 Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-launcher.sh
-# Use libdir properly for Fedora multilib
-Patch1:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-use-libdir.patch
-# Set default output to pulse
-Patch2:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-pulse-output-default.patch
-# Don't add extra CFLAGS, we're smart enough, thanks.
-Patch4:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-no-O0.patch
-# More sane versioning
-Patch5:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-moresaneversioning.patch
-Patch6:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-xsubpp-fix.patch
-Patch7:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-libmodplug-pkgconfig-change.patch
-Patch8:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-vorbis-pkgconfig-libs.patch
-Patch9:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-ruby22-remove-deprecated-usage.patch
-Patch10:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-openssl-1.1.patch
-Patch15:	xmms2-0.8DrO_o-remove-dead-libavcodec-function.patch
 
-Patch20:	bp-fix-avcodec-init.patch
-Patch21:	bp-fix-alloc-context.patch
-Patch22:	bp-fix-missing-include.patch
-Patch23:	bp-Get-rid-of-superfluous-argument-self.patch
-Patch24:	spelling-error.patch
-Patch25:	linker-flags.patch
-Patch26:	plugin-tta-segment-with-startms.patch
-Patch27:	nycli-man-page-symlink.patch
-Patch28:	rpath.patch
-Patch29:	fix-manpage-errors.patch
-Patch30:	fix-typos.patch
-#Patch31:	hardening-flags.patch
-Patch33:	samba-with-pkg-cfg.patch
-#Patch34:	ruby2-multiarch.patch
-Patch35:	libav10.patch
-Patch36:	xmms2-buildfixes.patch
+#Patch5:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-moresaneversioning.patch
+#Patch9:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-ruby22-remove-deprecated-usage.patch
 
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
