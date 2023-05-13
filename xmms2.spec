@@ -244,10 +244,7 @@ of this, there is a flexible media library to organize your music.
 This package contains files providing Perl bindings for accessing XMM2.
 
 %prep
-%setup -q -n %{name}-%{version}%{codename}
-# Unpack waflib files hidden inside the waf script.
-# (Patch 9 needs to patch them...)
-python2 waf --help &>/dev/null
+%setup -q
 %autopatch -p1
 
 # Convert to utf-8
