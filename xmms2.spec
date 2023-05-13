@@ -219,12 +219,6 @@ This package contains files providing Perl bindings for accessing XMM2.
 %setup -q
 %autopatch -p1
 
-# Convert to utf-8
-for i in `find src -name \*.1` xmms2-0.8DrO_o.ChangeLog; do
-	iconv -o $i.iso88591 -f iso88591 -t utf8 $i
-	mv $i.iso88591 $i
-done
-
 %build
 %setup_compile_flags
 export CPPFLAGS="%{optflags}"
