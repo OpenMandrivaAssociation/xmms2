@@ -159,14 +159,14 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 
 %files
 %doc AUTHORS xmms2-%{version}.ChangeLog COPYING COPYING.GPL COPYING.LGPL README.mdown
-%{_bindir}/%{name}*
-%{_bindir}/_xmms2-migrate-collections-v0
-%{_bindir}/sqlite2s4
-%{_libdir}/libxmmsclient*.so.*
-%{_libdir}/%{name}
-%{_mandir}/man1/%{name}*
-%{_datadir}/pixmaps/%{name}*
-%{_datadir}/%{name}
+#{_bindir}/%{name}*
+#{_bindir}/_xmms2-migrate-collections-v0
+#{_bindir}/sqlite2s4
+#{_libdir}/libxmmsclient*.so.*
+#{_libdir}/%{name}
+#{_mandir}/man1/%{name}*
+#{_datadir}/pixmaps/%{name}*
+#{_datadir}/%{name}
 
 %files devel
 %{_includedir}/%{name}/
