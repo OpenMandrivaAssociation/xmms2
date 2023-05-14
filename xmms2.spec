@@ -220,27 +220,21 @@ This package contains files providing Perl bindings for accessing XMM2.
 %autopatch -p1
 
 %build
-%setup_compile_flags
-export CPPFLAGS="%{optflags}"
-export LIBDIR="%{_libdir}"
-export PYTHONDIR="%{py2_platsitedir}"
-ln -s %{_bindir}/python2 python
-export PATH=`pwd`:$PATH
-python2 ./waf configure \
-    --prefix=%{_prefix} \
-    --libdir=%{_libdir} \
-    --with-ruby-libdir=%{ruby_vendorlibdir} \
-    --with-ruby-archdir=%{ruby_vendorarchdir} \
-    --with-pkgconfigdir=%{_libdir}/pkgconfig \
-    --with-perl-archdir=%{perl_vendorarch} \
-    --no-cython
-
-# parallel build occationally breaks..
-python2 ./waf build -v %{_smp_mflags} || python2 ./waf build -v
+%global optflags %optflags -Wno-deprecated-declarations -Wno-unused-but-set-variable
+%waf \
+	--without-optionals=python \
+	--with-ruby-libdir=%{ruby_vendorlibdir} \
+	--with-ruby-archdir=%{ruby_vendorarchdir} \
+	--with-perl-archdir=%{perl_vendorarch} \
+	--with-pkgconfigdir=%{_libdir}/pkgconfig
+%waf_build -v
 
 %install
-export PATH=`pwd`:$PATH
-python2 ./waf install --destdir=%{buildroot}
+%waf_install \
+	--with-ruby-libdir=%{ruby_vendorlibdir} \
+	--with-ruby-archdir=%{ruby_vendorarchdir} \
+	--with-perl-archdir=%{perl_vendorarch} \
+	--with-pkgconfigdir=%{_libdir}/pkgconfig
 
 # exec flags for debuginfo
 chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* %{buildroot}%{py2_platsitedir}/xmmsclient/xmmsapi.so \
