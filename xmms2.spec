@@ -222,7 +222,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 
 %build
 %global optflags %optflags -Wno-deprecated-declarations -Wno-unused-but-set-variable
-%waf \
+./waf configure \
 	--without-optionals=python \
 	--with-ruby-libdir=%{ruby_vendorlibdir} \
 	--with-ruby-archdir=%{ruby_vendorarchdir} \
@@ -231,7 +231,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 %waf_build -v
 
 %install
-%waf_install \
+./waf install --destdir=%{buildroot} \
 	--with-ruby-libdir=%{ruby_vendorlibdir} \
 	--with-ruby-archdir=%{ruby_vendorarchdir} \
 	--with-perl-archdir=%{perl_vendorarch} \
