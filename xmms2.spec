@@ -228,7 +228,7 @@ This package contains files providing Perl bindings for accessing XMM2.
 	--with-ruby-archdir=%{ruby_vendorarchdir} \
 	--with-perl-archdir=%{perl_vendorarch} \
 	--with-pkgconfigdir=%{_libdir}/pkgconfig
-%waf_build -v
+./waf build -v
 
 %install
 ./waf install --destdir=%{buildroot} \
