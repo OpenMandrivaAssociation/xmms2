@@ -32,7 +32,7 @@ Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-laun
 #Patch5:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-moresaneversioning.patch
 #Patch9:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-ruby22-remove-deprecated-usage.patch
 
-BuildRequires:	waf
+#BuildRequires:	waf
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
