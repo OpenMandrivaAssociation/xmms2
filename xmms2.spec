@@ -93,128 +93,41 @@ model, allowing multiple (even simultaneous!) user interfaces, both textual
 and graphical. All common audio formats are supported using plugins. On top
 of this, there is a flexible media library to organize your music.
 
-%package -n	%{libclient}
-Summary:	Library associated with xmms2, needed for xmms2 and its plugins
-Group:		System/Libraries
-Obsoletes:	%{libname}
+%package devel
+Summary:    Development libraries and headers for XMMS2
+Group:      Development/C++
+Requires:   glib2-devel, boost-devel
+Requires:   %{name} = %{version}-%{release}
 
-%description -n	%{libclient}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
+%description devel
+Development libraries and headers for XMMS2. You probably need this to develop
+or build new plugins for XMMS2.
 
-This library is mandatory for xmms2 and for all its plugins to run.
+%package docs
+Summary:    Development documentation for XMMS2
+Group:      Sound/Players
+BuildArch:  noarch
+Requires:   %{name} >= %{version}-%{release}
 
-%package -n	%{libclientglib}
-Summary:	Library associated with xmms2, needed for xmms2 and its plugins
-Group:		System/Libraries
-Obsoletes:	%{libname}
+%description docs
+API documentation for the XMMS2 modular audio framework architecture.
 
-%description -n	%{libclientglib}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
+%package perl
+Summary:    Perl support for XMMS2
+License:    GPL+ or Artistic
+Group:      Sound/Players
+Requires:   %{name} = %{version}-%{release}
 
-This library is mandatory for xmms2 and for all its plugins to run.
+%description perl
+Perl bindings for XMMS2.
 
-%package -n	%{libclientecore}
-Summary:	Library associated with xmms2, needed for xmms2 and its plugins
-Group:		System/Libraries
-Obsoletes:	%{libname}
+%package ruby
+Summary:    Ruby support for XMMS2
+Group:      Sound/Players
+Requires:   %{name} = %{version}-%{release}
 
-%description -n	%{libclientecore}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
-
-This library is mandatory for xmms2 and for all its plugins to run.
-
-%package -n	%{libclientpp}
-Summary:	Library associated with xmms2, needed for xmms2 and its plugins
-Group:		System/Libraries
-Obsoletes:	%{libname}
-
-%description -n	%{libclientpp}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
-
-This library is mandatory for xmms2 and for all its plugins to run.
-
-%package -n	%{libclientppglib}
-Summary:	Library associated with xmms2, needed for xmms2 and its plugins
-Group:		System/Libraries
-Obsoletes:	%{libname}
-
-%description -n	%{libclientppglib}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
-
-This library is mandatory for xmms2 and for all its plugins to run.
-
-%package -n	%{devname}
-Summary:	Development package with static libs and headers
-Group:		Development/C
-Requires:	%{libclient} = %{version}-%{release}
-Requires:	%{libclientglib} = %{version}-%{release}
-Requires:	%{libclientecore} = %{version}-%{release}
-Requires:	%{libclientpp} = %{version}-%{release}
-Requires:	%{libclientppglib} = %{version}-%{release}
-Provides:	%{name}-devel = %{version}-%{release}
-Obsoletes:	%{libname}-devel
-
-%description -n	%{devname}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
-
-Static libraries and header files required for compiling xmms2 plugins.
-
-%package -n	python2-%{name}
-Summary:	Python bindings for XMMS2
-Group:		Development/Python
-%rename		%{name}-python
-%rename		python-%{name}
-
-%description -n	python2-%{name}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
-
-This package contains files providing Python bindings for accessing XMM2.
-
-%package -n	ruby-%{name}
-Summary:	Ruby bindings for XMMS2
-Group:		Development/Ruby
-%rename		%{name}-ruby
-
-%description -n	ruby-%{name}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
-
-This package contains files providing Ruby bindings for accessing XMM2.
-
-%package -n	perl-%{name}
-Summary:	Perl bindings for XMMS2
-Group:		Development/Perl
-
-%description -n	perl-%{name}
-XMMS2 is a redesign of the XMMS music player. It features a client-server
-model, allowing multiple (even simultaneous!) user interfaces, both textual
-and graphical. All common audio formats are supported using plugins. On top
-of this, there is a flexible media library to organize your music.
-
-This package contains files providing Perl bindings for accessing XMM2.
+%description ruby
+Ruby bindings for XMMS2.
 
 %prep
 %setup -q
