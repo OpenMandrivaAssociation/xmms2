@@ -238,139 +238,35 @@ This package contains files providing Perl bindings for accessing XMM2.
 	--with-pkgconfigdir=%{_libdir}/pkgconfig
 
 # exec flags for debuginfo
-chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* %{buildroot}%{py2_platsitedir}/xmmsclient/xmmsapi.so \
-	%{buildroot}%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so %{buildroot}%{ruby_vendorarchdir}/xmmsclient_*.so
+chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* \
+    %{buildroot}%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so %{buildroot}%{ruby_vendorarchdir}/xmmsclient_*.so
 
 
 install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 
 %files
-%{_bindir}/nyxmms2
-#%{_bindir}/vistest
-#%{_bindir}/vistest-fft
-%{_bindir}/xmms2
-%{_bindir}/xmms2d
-%{_bindir}/xmms2-client-launcher.sh
-%{_bindir}/xmms2-et
-%{_bindir}/xmms2-find-avahi
-%{_bindir}/xmms2-launcher
-#%{_bindir}/xmms2-libvisual
-%{_bindir}/xmms2-mdns-avahi
-%{_bindir}/xmms2-mlib-updater
-#%{_bindir}/xmms2-ripper
+%doc AUTHORS xmms2-%{version}.ChangeLog COPYING COPYING.GPL COPYING.LGPL README.mdown
+%{_bindir}/%{name}*
+%{_bindir}/_xmms2-migrate-collections-v0
+%{_bindir}/sqlite2s4
+%{_libdir}/libxmmsclient*.so.*
+%{_libdir}/%{name}
+%{_mandir}/man1/%{name}*
+%{_datadir}/pixmaps/%{name}*
+%{_datadir}/%{name}
 
-# plugins
-%dir %{_libdir}/xmms2
-%{_libdir}/xmms2/libxmms_airplay.so
-%{_libdir}/xmms2/libxmms_alsa.so
-%{_libdir}/xmms2/libxmms_ao.so
-%{_libdir}/xmms2/libxmms_apefile.so
-%{_libdir}/xmms2/libxmms_asf.so
-%{_libdir}/xmms2/libxmms_asx.so
-%{_libdir}/xmms2/libxmms_avcodec.so
-#{_libdir}/xmms2/libxmms_cdda.so
-%{_libdir}/xmms2/libxmms_cue.so
-%{_libdir}/xmms2/libxmms_curl.so
-%{_libdir}/xmms2/libxmms_daap.so
-%{_libdir}/xmms2/libxmms_diskwrite.so
-%{_libdir}/xmms2/libxmms_equalizer.so
-#{_libdir}/xmms2/libxmms_faad.so
-%{_libdir}/xmms2/libxmms_file.so
-%{_libdir}/xmms2/libxmms_flac.so
-%{_libdir}/xmms2/libxmms_flv.so
-%{_libdir}/xmms2/libxmms_gme.so
-%{_libdir}/xmms2/libxmms_gvfs.so
-%{_libdir}/xmms2/libxmms_html.so
-%{_libdir}/xmms2/libxmms_ices.so
-%{_libdir}/xmms2/libxmms_icymetaint.so
-%{_libdir}/xmms2/libxmms_id3v2.so
-%{_libdir}/xmms2/libxmms_jack.so
-%{_libdir}/xmms2/libxmms_karaoke.so
-%{_libdir}/xmms2/libxmms_m3u.so
-%{_libdir}/xmms2/libxmms_mad.so
-%{_libdir}/xmms2/libxmms_mms.so
-%{_libdir}/xmms2/libxmms_modplug.so
-%{_libdir}/xmms2/libxmms_mp4.so
-%{_libdir}/xmms2/libxmms_mpg123.so
-%{_libdir}/xmms2/libxmms_musepack.so
-%{_libdir}/xmms2/libxmms_normalize.so
-%{_libdir}/xmms2/libxmms_null.so
-%{_libdir}/xmms2/libxmms_nulstripper.so
-%{_libdir}/xmms2/libxmms_ofa.so
-%{_libdir}/xmms2/libxmms_oss.so
-%{_libdir}/xmms2/libxmms_pls.so
-%{_libdir}/xmms2/libxmms_pulse.so
-%{_libdir}/xmms2/libxmms_replaygain.so
-%{_libdir}/xmms2/libxmms_rss.so
-%{_libdir}/xmms2/libxmms_samba.so
-#%{_libdir}/xmms2/libxmms_sid.so
-%{_libdir}/xmms2/libxmms_sndfile.so
-%{_libdir}/xmms2/libxmms_speex.so
-%{_libdir}/xmms2/libxmms_tta.so
-%{_libdir}/xmms2/libxmms_wave.so
-%{_libdir}/xmms2/libxmms_vocoder.so
-%{_libdir}/xmms2/libxmms_vorbis.so
-%{_libdir}/xmms2/libxmms_wavpack.so
-%{_libdir}/xmms2/libxmms_xml.so
-%{_libdir}/xmms2/libxmms_xspf.so
+%files devel
+%{_includedir}/%{name}/
+%{_libdir}/libxmmsclient*.so
+%{_libdir}/pkgconfig/%{name}-*.pc
 
-%dir %{_datadir}/xmms2
-%dir %{_datadir}/xmms2/scripts
-%dir %{_datadir}/xmms2/scripts/startup.d
-%{_datadir}/xmms2/scripts/startup.d/*sh
-%{_datadir}/xmms2/mind.in.a.box-lament_snipplet.ogg
+%files docs
+%doc doc/xmms2/html
 
-%{_datadir}/pixmaps/xmms2-128.png
-%{_datadir}/pixmaps/xmms2-16.png
-%{_datadir}/pixmaps/xmms2-32.png
-%{_datadir}/pixmaps/xmms2-48.png
-%{_datadir}/pixmaps/xmms2-black-on-white.svg
-%{_datadir}/pixmaps/xmms2-white-on-black.svg
-%{_datadir}/pixmaps/xmms2.svg
+%files perl
+%{perl_vendorarch}/Audio/
+%{perl_vendorarch}/auto/Audio/
 
-%{_mandir}/man1/nyxmms2.1*
-%{_mandir}/man1/xmms2.1*
-%{_mandir}/man1/xmms2-et.1*
-%{_mandir}/man1/xmms2-launcher.1*
-%{_mandir}/man1/xmms2-mdns-avahi.1*
-%{_mandir}/man1/xmms2d.1*
-
-%files -n %{libclient}
-%{_libdir}/libxmmsclient.so.%{client_major}*
-
-%files -n %{libclientglib}
-%{_libdir}/libxmmsclient-glib.so.%{c_glib_major}*
-
-%files -n %{libclientecore}
-%{_libdir}/libxmmsclient-ecore.so.%{c_ecore_major}*
-
-%files -n %{libclientpp}
-%{_libdir}/libxmmsclient++.so.%{c_pp_major}*
-
-%files -n %{libclientppglib}
-%{_libdir}/libxmmsclient++-glib.so.%{c_pp_glib_major}*
-
-%files -n %{devname}
-%{_includedir}/xmms2
-%{_libdir}/lib*.so
-%{_libdir}/pkgconfig/*.pc
-
-%files -n ruby-%{name}
-%dir %{ruby_vendorlibdir}/xmmsclient
-%{ruby_vendorlibdir}/xmmsclient/*.rb
-%{ruby_vendorarchdir}/*.so
-%{ruby_vendorlibdir}/xmmsclient.rb
-
-%files -n python2-%{name}
-%dir %{py2_platsitedir}/xmmsclient
-%{py2_platsitedir}/xmmsclient/*.so
-%{py2_platsitedir}/xmmsclient/*.py*
-
-%files -n perl-%{name}
-%dir %{perl_vendorarch}/Audio
-%{perl_vendorarch}/Audio/*.pm
-%{perl_vendorarch}/Audio/*.pod
-%dir %{perl_vendorarch}/Audio/XMMSClient
-%{perl_vendorarch}/Audio/XMMSClient/*.pod
-%{perl_vendorarch}/Audio/XMMSClient/*.pm
-%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so
+%files ruby
+%{ruby_vendorarchdir}/xmmsclient*
+%{ruby_vendorlibdir}/xmmsclient*
