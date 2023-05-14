@@ -151,8 +151,8 @@ Ruby bindings for XMMS2.
 	--with-pkgconfigdir=%{_libdir}/pkgconfig
 
 # exec flags for debuginfo
-chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* \
-    %{buildroot}%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so %{buildroot}%{ruby_vendorarchdir}/xmmsclient_*.so
+#chmod +x %{buildroot}%{_libdir}/%{name}/* %{buildroot}%{_libdir}/libxmmsclient*.so* \
+#    %{buildroot}%{perl_vendorarch}/auto/Audio/XMMSClient/XMMSClient.so %{buildroot}%{ruby_vendorarchdir}/xmmsclient_*.so
 
 
 install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
