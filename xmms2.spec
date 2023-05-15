@@ -147,8 +147,6 @@ Ruby bindings for XMMS2.
 
 %install
 ./waf install --destdir=%{buildroot} \
-	--prefix=/usr \
-	--sbindir=/usr/bin \	
 	--with-ruby-libdir=%{ruby_vendorlibdir} \
 	--with-ruby-archdir=%{ruby_vendorarchdir} \
 	--with-perl-archdir=%{perl_vendorarch} \
