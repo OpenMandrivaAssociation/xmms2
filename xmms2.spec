@@ -174,12 +174,12 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_libdir}/pkgconfig/%{name}-*.pc
 
 %files docs
-%#doc doc/xmms2/html
+#doc doc/xmms2/html
 
 %files perl
-%{perl_vendorarch}/Audio/
-%{perl_vendorarch}/auto/Audio/
+#{perl_vendorarch}/Audio/
+#{perl_vendorarch}/auto/Audio/
 
 %files ruby
-%{ruby_vendorarchdir}/xmmsclient*
-%{ruby_vendorlibdir}/xmmsclient*
+#{ruby_vendorarchdir}/xmmsclient*
+#{ruby_vendorlibdir}/xmmsclient*
