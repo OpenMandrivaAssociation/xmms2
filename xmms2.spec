@@ -161,27 +161,27 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 
 %files
 %doc AUTHORS xmms2-%{version}.ChangeLog COPYING COPYING.GPL COPYING.LGPL README.mdown
-#{_bindir}/%{name}*
-#{_bindir}/_xmms2-migrate-collections-v0
-#{_bindir}/sqlite2s4
-#{_libdir}/libxmmsclient*.so.*
-#{_libdir}/%{name}
-#{_mandir}/man1/%{name}*
-#{_datadir}/pixmaps/%{name}*
-#{_datadir}/%{name}
-
+%{_bindir}/%{name}*
+%{_bindir}/_xmms2-migrate-collections-v0
+%{_bindir}/sqlite2s4
+%{_libdir}/libxmmsclient*.so.*
+%{_libdir}/%{name}
+%{_mandir}/man1/%{name}*
+%{_datadir}/pixmaps/%{name}*
+%{_datadir}/%{name}
+	
 %files devel
-#{_includedir}/%{name}/
-#{_libdir}/libxmmsclient*.so
+%{_includedir}/%{name}/
+%{_libdir}/libxmmsclient*.so
 %{_libdir}/pkgconfig/%{name}-*.pc
 
 %files docs
 #doc doc/xmms2/html
 
 %files perl
-#{perl_vendorarch}/Audio/
-#{perl_vendorarch}/auto/Audio/
+%{perl_vendorarch}/Audio/
+%{perl_vendorarch}/auto/Audio/
 
 %files ruby
-#{ruby_vendorarchdir}/xmmsclient*
-#{ruby_vendorlibdir}/xmmsclient*
+%{ruby_vendorarchdir}/xmmsclient*
+%{ruby_vendorlibdir}/xmmsclient*
