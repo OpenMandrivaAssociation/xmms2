@@ -28,7 +28,7 @@ BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libcdio_cdda)
-#BuildRequires:	pkgconfig(ecore)
+BuildRequires:	pkgconfig(ecore)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(fluidsynth)
 BuildRequires:	pkgconfig(fftw3)
@@ -81,7 +81,9 @@ BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(opusfile)
 BuildRequires:	pkgconfig(samba-util)
 
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+
+Obsoletes:	python2-xmms2 < %{EVRD}
 
 %description
 XMMS2 is a redesign of the XMMS music player. It features a client-server
@@ -99,27 +101,20 @@ Library associated with xmms2, needed for xmms2 and its plugins
 Summary:    Development libraries and headers for XMMS2
 Group:      Development/C++
 Requires:   glib2-devel, boost-devel
-Requires:   %{name} = %{version}-%{release}
-Requires:	%{libname} = %{version}-%{release}
+Requires:   %{name} = %{EVRD}
+Requires:   %{libname} = %{EVRD}
 
 %description devel
 Development libraries and headers for XMMS2. You probably need this to develop
 or build new plugins for XMMS2.
 
-%package docs
-Summary:    Development documentation for XMMS2
-Group:      Sound/Players
-BuildArch:  noarch
-Requires:   %{name} >= %{version}-%{release}
-
-%description docs
-API documentation for the XMMS2 modular audio framework architecture.
-
 %package perl
 Summary:    Perl support for XMMS2
 License:    GPL+ or Artistic
 Group:      Sound/Players
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} = %{EVRD}
+	
+Obsoletes: perl-xmms2 < %{EVRD}	
 
 %description perl
 Perl bindings for XMMS2.
@@ -127,7 +122,9 @@ Perl bindings for XMMS2.
 %package ruby
 Summary:    Ruby support for XMMS2
 Group:      Sound/Players
-Requires:   %{name} = %{version}-%{release}
+Requires:   %{name} = %{EVRD}
+
+Obsoletes: ruby-xmms2 < %{EVRD}
 
 %description ruby
 Ruby bindings for XMMS2.
@@ -179,9 +176,6 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_includedir}/%{name}/
 %{_libdir}/libxmmsclient*.so
 %{_libdir}/pkgconfig/%{name}-*.pc
-
-%files docs
-#doc doc/xmms2/html
 
 %files perl
 %{perl_vendorarch}/Audio/
