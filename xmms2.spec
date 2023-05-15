@@ -136,6 +136,8 @@ Ruby bindings for XMMS2.
 %build
 %global optflags %optflags -Wno-deprecated-declarations -Wno-unused-but-set-variable
 ./waf configure \
+	--prefix=/usr \
+	--sbindir=/usr/bin \
 	--without-optionals=python \
 	--with-ruby-libdir=%{ruby_vendorlibdir} \
 	--with-ruby-archdir=%{ruby_vendorarchdir} \
@@ -145,6 +147,8 @@ Ruby bindings for XMMS2.
 
 %install
 ./waf install --destdir=%{buildroot} \
+	--prefix=/usr \
+	--sbindir=/usr/bin \	
 	--with-ruby-libdir=%{ruby_vendorlibdir} \
 	--with-ruby-archdir=%{ruby_vendorarchdir} \
 	--with-perl-archdir=%{perl_vendorarch} \
