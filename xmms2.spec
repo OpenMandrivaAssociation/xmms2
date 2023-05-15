@@ -174,7 +174,7 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_libdir}/pkgconfig/%{name}-*.pc
 
 %files docs
-%doc doc/xmms2/html
+%#doc doc/xmms2/html
 
 %files perl
 %{perl_vendorarch}/Audio/
