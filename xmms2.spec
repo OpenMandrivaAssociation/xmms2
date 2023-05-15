@@ -169,8 +169,8 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 #{_datadir}/%{name}
 
 %files devel
-%{_includedir}/%{name}/
-%{_libdir}/libxmmsclient*.so
+#{_includedir}/%{name}/
+#{_libdir}/libxmmsclient*.so
 %{_libdir}/pkgconfig/%{name}-*.pc
 
 %files docs
