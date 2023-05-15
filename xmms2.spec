@@ -28,7 +28,7 @@ BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libcdio_cdda)
-BuildRequires:	pkgconfig(ecore)
+#BuildRequires:	pkgconfig(ecore)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(fluidsynth)
 BuildRequires:	pkgconfig(fftw3)
