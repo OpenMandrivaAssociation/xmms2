@@ -1,22 +1,11 @@
 %define codename DrO_o
 
 %define	major	0
-%define	libname %mklibname xmms2_ %{major}
+%define	libname %mklibname xmms2
 %define	devname	%mklibname -d xmms2
 
 # too lazy to fix...
 %define	_disable_ld_no_undefined 1
-
-%define	client_major 6
-%define libclient %mklibname xmmsclient %{client_major}
-%define c_glib_major 1
-%define libclientglib %mklibname xmmsclient-glib %{c_glib_major}
-%define	c_ecore_major 1
-%define libclientecore %mklibname xmmsclient-ecore %{c_ecore_major}
-%define	c_pp_major 4
-%define libclientpp %mklibname xmmsclient++ %{c_pp_major}
-%define	c_pp_glib_major 1
-%define libclientppglib %mklibname xmmsclient++-glib %{c_pp_glib_major}
 
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
@@ -32,13 +21,16 @@ Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-laun
 #Patch5:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-moresaneversioning.patch
 #Patch9:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-ruby22-remove-deprecated-usage.patch
 
+# Disable waf, because upstream not like system waf
 #BuildRequires:	waf
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
 BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(libcdio_cdda)
 BuildRequires:	pkgconfig(ecore)
 BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(fluidsynth)
 BuildRequires:	pkgconfig(fftw3)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(ao)
@@ -71,7 +63,6 @@ BuildRequires:	perl(Pod::Parser)
 BuildRequires:	readline-devel
 BuildRequires:	pkgconfig(wavpack)
 BuildRequires:	pkgconfig(libpulse)
-BuildRequires:	pkgconfig(python2)
 BuildRequires:	pkgconfig(ruby)
 BuildRequires:	pkgconfig(SDL_ttf)
 #BuildRequires:	pkgconfig(libsidplay2)
@@ -82,22 +73,34 @@ BuildRequires:	swig >= 1.3.25
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	libgme-devel
+# or musepack but it is not available in Cooker right now.
+BuildRequires:	libmpcdec-devel
 # do actually require 2.3.0 from cvs, but sometime later, whenever.. :p
 #BuildRequires:	pkgconfig(sc68)
 BuildRequires:	pkgconfig(sndfile)
+BuildRequires:	pkgconfig(opusfile)
 BuildRequires:	pkgconfig(samba-util)
+
+Requires:	%{libname} = %{version}-%{release}
 
 %description
 XMMS2 is a redesign of the XMMS music player. It features a client-server
 model, allowing multiple (even simultaneous!) user interfaces, both textual
 and graphical. All common audio formats are supported using plugins. On top
 of this, there is a flexible media library to organize your music.
+	
+%package -n %{libname}
+Summary:        Shared library for %{name}
+
+%description -n %{libname}
+Library associated with xmms2, needed for xmms2 and its plugins
 
 %package devel
 Summary:    Development libraries and headers for XMMS2
 Group:      Development/C++
 Requires:   glib2-devel, boost-devel
 Requires:   %{name} = %{version}-%{release}
+Requires:	%{libname} = %{version}-%{release}
 
 %description devel
 Development libraries and headers for XMMS2. You probably need this to develop
@@ -164,11 +167,13 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %{_bindir}/%{name}*
 %{_bindir}/_xmms2-migrate-collections-v0
 %{_bindir}/sqlite2s4
-%{_libdir}/libxmmsclient*.so.*
-%{_libdir}/%{name}
 %{_mandir}/man1/%{name}*
 %{_datadir}/pixmaps/%{name}*
 %{_datadir}/%{name}
+
+%files -n %{libname}
+%{_libdir}/libxmmsclient*.so.*
+%{_libdir}/%{name}	
 	
 %files devel
 %{_includedir}/%{name}/
