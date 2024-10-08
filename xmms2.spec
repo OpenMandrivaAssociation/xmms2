@@ -9,8 +9,8 @@
 
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
-Version:	0.9.3
-Release:	4
+Version:	0.9.4
+Release:	1
 Group:		Sound
 License:	GPLv2+
 URL:		http://xmms2.sourceforge.net/
@@ -18,7 +18,7 @@ Source0:	https://github.com/xmms2/xmms2-devel/releases/download/%{version}/xmms2
 #Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{codename}.tar.bz2
 Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-launcher.sh
 
-Patch1:		xmms2-0.9.3-ffmpeg7.patch
+#Patch1:		xmms2-0.9.3-ffmpeg7.patch
 #Patch5:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-moresaneversioning.patch
 #Patch9:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-ruby22-remove-deprecated-usage.patch
 
