@@ -13,7 +13,7 @@ Version:	0.9.4
 Release:	1
 Group:		Sound
 License:	GPLv2+
-URL:		http://xmms2.sourceforge.net/
+URL:		https://xmms2.sourceforge.net/
 Source0:	https://github.com/xmms2/xmms2-devel/releases/download/%{version}/xmms2-%{version}.tar.xz
 #Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{codename}.tar.bz2
 Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-launcher.sh
