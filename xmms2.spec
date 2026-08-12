@@ -10,7 +10,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.9.7
-Release:	7
+Release:	8
 Group:		Sound
 License:	GPLv2+
 URL:		https://xmms2.sourceforge.net/
@@ -29,7 +29,8 @@ BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libcdio_cdda)
-BuildRequires:	pkgconfig(ecore)
+# efl needs rebuild for libjxl soname; drop until then
+#BuildRequires:	pkgconfig(ecore)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(fluidsynth)
 BuildRequires:	pkgconfig(fftw3)
