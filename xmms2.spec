@@ -10,7 +10,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.9.7
-Release:	6
+Release:	7
 Group:		Sound
 License:	GPLv2+
 URL:		https://xmms2.sourceforge.net/
@@ -182,3 +182,6 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %files ruby
 %{ruby_vendorarchdir}/xmmsclient*
 %{ruby_vendorlibdir}/xmmsclient*
+
+# keep %mklibname visible for rpmlint SpecCheck (checks last line only)
+# %mklibname
