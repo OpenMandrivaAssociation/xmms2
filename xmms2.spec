@@ -10,12 +10,11 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.9.7
-Release:	5
+Release:	6
 Group:		Sound
 License:	GPLv2+
 URL:		https://xmms2.sourceforge.net/
 Source0:	https://github.com/xmms2/xmms2-devel/releases/download/%{version}/xmms2-%{version}.tar.xz
-Source100:	%{name}.rpmlintrc
 #Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{codename}.tar.bz2
 Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-launcher.sh
 
@@ -131,7 +130,6 @@ Ruby bindings for XMMS2.
 
 %prep
 %setup -q
-%autopatch -p1
 
 %build
 %global optflags %optflags -Wno-deprecated-declarations -Wno-unused-but-set-variable
