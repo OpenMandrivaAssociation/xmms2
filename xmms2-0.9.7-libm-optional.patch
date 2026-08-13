@@ -1,16 +1,59 @@
 --- xmms2-0.9.7/src/plugins/replaygain/wscript
 +++ xmms2-0.9.7/src/plugins/replaygain/wscript
-@@ -1,7 +1,12 @@
+@@ -1,7 +1,8 @@
  from waftools.plugin import plugin
  
  def plugin_configure(conf):
 -    conf.check_cc(lib="m", uselib_store="math")
-+    # On some arches (e.g. aarch64) waf's libm probe can fail even though -lm works;
-+    # force the link flag so the required replaygain plugin still builds.
 +    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
 +        conf.env.LIB_math = ["m"]
-+        conf.env.LIBPATH_math = []
-+        conf.env.INCLUDES_math = []
  
  configure, build = plugin("replaygain", configure=plugin_configure,
                            libs=["math"])
+--- xmms2-0.9.7/src/plugins/equalizer/wscript
++++ xmms2-0.9.7/src/plugins/equalizer/wscript
+@@ -8,7 +8,8 @@
+ """.split()
+ 
+ def plugin_configure(conf):
+-    conf.check_cc(lib="m", uselib_store="math")
++    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
++        conf.env.LIB_math = ["m"]
+ 
+ configure, build = plugin("equalizer", configure=plugin_configure, libs=["math"],
+                           source=source)
+--- xmms2-0.9.7/src/plugins/karaoke/wscript
++++ xmms2-0.9.7/src/plugins/karaoke/wscript
+@@ -1,6 +1,7 @@
+ from waftools.plugin import plugin
+ 
+ def plugin_configure(conf):
+-    conf.check_cc(lib="m", uselib_store="math")
++    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
++        conf.env.LIB_math = ["m"]
+ 
+ configure, build = plugin("karaoke", configure=plugin_configure, libs=["math"])
+--- xmms2-0.9.7/src/plugins/mp4/wscript
++++ xmms2-0.9.7/src/plugins/mp4/wscript
+@@ -1,7 +1,8 @@
+ from waftools.plugin import plugin
+ 
+ def plugin_configure(conf):
+-    conf.check_cc(lib="m", uselib_store="math")
++    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
++        conf.env.LIB_math = ["m"]
+ 
+     conf.env.DEFINES_mp4 = ['USE_TAGGING']
+     # to use iTunes DRM change this to true
+--- xmms2-0.9.7/src/plugins/faad/wscript
++++ xmms2-0.9.7/src/plugins/faad/wscript
+@@ -1,7 +1,8 @@
+ from waftools.plugin import plugin
+ 
+ def plugin_configure(conf):
+-    conf.check_cc(lib="m", uselib_store="math")
++    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
++        conf.env.LIB_math = ["m"]
+     conf.check_cc(header_name="faad.h")
+     conf.check_cc(lib="faad", uselib="math", uselib_store="faad")
+ 
