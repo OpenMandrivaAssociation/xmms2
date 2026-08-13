@@ -57,3 +57,19 @@
      conf.check_cc(header_name="faad.h")
      conf.check_cc(lib="faad", uselib="math", uselib_store="faad")
  
+--- xmms2-0.9.7/src/xmms/wscript
++++ xmms2-0.9.7/src/xmms/wscript
+@@ -234,8 +234,11 @@
+         return sin(0.5);
+     }
+     """
+-    conf.check_cc(lib='m', fragment=sin_fragment, header_name='math.h',
+-                  uselib_store="math")
++    # On some arches the sin()/libm link probe fails under LTO/Clang even though
++    # math.h and -lm work; force the math uselib so the daemon still configures.
++    if not conf.check_cc(lib='m', fragment=sin_fragment, header_name='math.h',
++                         uselib_store="math", mandatory=False):
++        conf.env.LIB_math = ["m"]
+ 
+     conf.env.compat_impl = get_compat_impl(conf)
+     conf.env.statfs_impl = get_statfs_impl(conf)

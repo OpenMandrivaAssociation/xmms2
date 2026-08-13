@@ -10,7 +10,7 @@
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.9.7
-Release:	10
+Release:	11
 Group:		Sound
 License:	GPLv2+
 URL:		https://xmms2.sourceforge.net/
@@ -135,6 +135,8 @@ Ruby bindings for XMMS2.
 
 %build
 %global optflags %optflags -Wno-deprecated-declarations -Wno-unused-but-set-variable
+# Help waf libm probes that mis-detect under Clang/LTO on some arches
+export LIBS="${LIBS:-} -lm"
 ./waf configure \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
