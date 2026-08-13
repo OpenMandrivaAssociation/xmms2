@@ -6,13 +6,11 @@
 
 # too lazy to fix...
 %define	_disable_ld_no_undefined 1
-# Clang LTO breaks waf configure probes on aarch64 (math.h/time.h reported missing)
-%define	_disable_lto 1
 
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.9.7
-Release:	14
+Release:	15
 Group:		Sound
 License:	GPLv2+
 URL:		https://xmms2.sourceforge.net/
@@ -20,13 +18,15 @@ Source0:	https://github.com/xmms2/xmms2-devel/releases/download/%{version}/xmms2
 #Source0:	http://prdownloads.sourceforge.net/xmms2/%{name}-%{version}%{codename}.tar.bz2
 Source1:	https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-client-launcher.sh
 
-Patch0:		xmms2-0.9.7-libm-optional.patch
 #Patch1:		xmms2-0.9.3-ffmpeg7.patch
 #Patch5:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-moresaneversioning.patch
 #Patch9:		https://src.fedoraproject.org/rpms/xmms2/raw/master/f/xmms2-0.8DrO_o-ruby22-remove-deprecated-usage.patch
 
 # Disable waf, because upstream not like system waf
 #BuildRequires:	waf
+# gcc pulls libatomic via Requires on 16.2+; older gcc on x86_64/aarch64 does not,
+# and waf configure link tests then fail for everything (-Wall, -lm, headers, ...)
+BuildRequires:	atomic-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	avahi-compat-libdns_sd-devel
 BuildRequires:	boost-devel
@@ -133,12 +133,10 @@ Obsoletes: ruby-xmms2 < %{EVRD}
 Ruby bindings for XMMS2.
 
 %prep
-%autosetup -p1
+%setup -q
 
 %build
 %global optflags %optflags -Wno-deprecated-declarations -Wno-unused-but-set-variable
-# Help waf libm probes that mis-detect under Clang/LTO on some arches
-export LIBS="${LIBS:-} -lm"
 ./waf configure \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
