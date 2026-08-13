@@ -6,11 +6,13 @@
 
 # too lazy to fix...
 %define	_disable_ld_no_undefined 1
+# Clang LTO breaks waf configure probes on aarch64 (math.h/time.h reported missing)
+%define	_disable_lto 1
 
 Summary:	Redesign of the XMMS music player
 Name:		xmms2
 Version:	0.9.7
-Release:	11
+Release:	12
 Group:		Sound
 License:	GPLv2+
 URL:		https://xmms2.sourceforge.net/
