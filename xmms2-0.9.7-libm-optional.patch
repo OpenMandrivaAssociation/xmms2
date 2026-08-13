@@ -1,3 +1,136 @@
+--- xmms2-0.9.7/src/xmms/wscript
++++ xmms2-0.9.7/src/xmms/wscript
+@@ -149,43 +149,47 @@
+     # Detect the type of stat call used
+     if Utils.unversioned_sys_platform() == 'win32':
+         return 'dummy'
+-    else:
++    # Linux packaging: prefer linux impl; probes are best-effort only
++    if Utils.unversioned_sys_platform() == 'linux':
++        if conf.check(header_name='sys/vfs.h', mandatory=False):
++            return 'linux'
++        return 'dummy'
++    try:
++        conf.check(header_name='sys/vfs.h')
++    except Errors.ConfigurationError:
+         try:
+-            conf.check(header_name='sys/vfs.h')
++            conf.check(header_name='sys/param.h')
+         except Errors.ConfigurationError:
++            return 'dummy'
++        else:
+             try:
+-                conf.check(header_name='sys/param.h')
++                conf.check_cc(fragment=statfs_fragment,
++                              uselib_store="statfs",
++                              msg="Checking for struct statfs")
+             except Errors.ConfigurationError:
+-                return 'dummy'
++                return 'netbsd'
+             else:
+-                try:
+-                    conf.check_cc(fragment=statfs_fragment,
+-                                  uselib_store="statfs",
+-                                  msg="Checking for struct statfs")
+-                except Errors.ConfigurationError:
+-                    return 'netbsd'
+-                else:
+-                    return 'bsd'
++                return 'bsd'
++    else:
++        if Utils.unversioned_sys_platform() == 'sunos':
++            return 'solaris'
+         else:
+-            if Utils.unversioned_sys_platform() == 'sunos':
+-                return 'solaris'
+-            else:
+-                return 'linux'
++            return 'linux'
+ 
+ # Get the implementation variant for the localtime_r function.
+ def get_localtime_impl(conf):
+-    try:
+-        localtime_r_fragment = """
+-        #include <time.h>
+-        int main(void) {
+-            return localtime_r(0, 0) != 0;
+-        }
+-        """
+-        conf.check_cc(fragment=localtime_r_fragment, header_name='time.h')
+-    except Errors.ConfigurationError:
+-        return 'dummy'
+-    else:
++    localtime_r_fragment = """
++    #include <time.h>
++    int main(void) {
++        return localtime_r(0, 0) != 0;
++    }
++    """
++    if conf.check_cc(fragment=localtime_r_fragment, header_name='time.h', mandatory=False):
+         return 'unix'
++    # Linux always has localtime_r; force unix if the probe mis-detects
++    if Utils.unversioned_sys_platform() == 'linux':
++        return 'unix'
++    return 'dummy'
+ 
+ # Get the implementation variant for signals, symlinks and uid check.
+ def get_compat_impl(conf):
+@@ -198,24 +202,18 @@
+     if conf.options.without_unixshmserver:
+         return 'dummy'
+ 
+-    try:
+-        semctl_fragment = """
+-        #include <sys/sem.h>
+-        int main(void) {
+-            return semctl(0,0,0,0);
+-        }
+-        """
+-        conf.check_cc(fragment=semctl_fragment,
+-                      header_name=['sys/types.h','sys/ipc.h','sys/sem.h'])
+-    except:
+-        have_semctl = False
+-    else:
+-        have_semctl = True
++    semctl_fragment = """
++    #include <sys/sem.h>
++    int main(void) {
++        return semctl(0,0,0,0);
++    }
++    """
++    have_semctl = conf.check_cc(fragment=semctl_fragment,
++                      header_name=['sys/types.h','sys/ipc.h','sys/sem.h'],
++                      mandatory=False)
+ 
+-    try:
+-        conf.check_cc(fragment=semun_fragment, uselib_store="semun",
+-                      msg = "Checking for union semun")
+-    except Errors.ConfigurationError:
++    if not conf.check_cc(fragment=semun_fragment, uselib_store="semun",
++                      msg = "Checking for union semun", mandatory=False):
+         conf.env.append_value('DEFINES_shm', "_SEM_SEMUN_UNDEFINED")
+ 
+     if have_semctl:
+@@ -227,7 +225,9 @@
+     conf.check_cfg(package='gmodule-2.0', atleast_version='2.32.0',
+             uselib_store='gmodule2', args='--cflags --libs')
+ 
+-    # Check for the sin function in the math lib
++    # Force -lm: waf header/lib probes mis-detect on some OMV arches (x86_64/aarch64)
++    # even when the toolchain is fine for the actual build.
++    conf.env.LIB_math = ["m"]
+     sin_fragment = """
+     #include <math.h>
+     int main(void) {
+@@ -235,7 +235,7 @@
+     }
+     """
+     conf.check_cc(lib='m', fragment=sin_fragment, header_name='math.h',
+-                  uselib_store="math")
++                  uselib_store="math", mandatory=False)
+ 
+     conf.env.compat_impl = get_compat_impl(conf)
+     conf.env.statfs_impl = get_statfs_impl(conf)
 --- xmms2-0.9.7/src/plugins/replaygain/wscript
 +++ xmms2-0.9.7/src/plugins/replaygain/wscript
 @@ -1,7 +1,8 @@
@@ -5,8 +138,8 @@
  
  def plugin_configure(conf):
 -    conf.check_cc(lib="m", uselib_store="math")
-+    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
-+        conf.env.LIB_math = ["m"]
++    conf.env.LIB_math = ["m"]
++    conf.check_cc(lib="m", uselib_store="math", mandatory=False)
  
  configure, build = plugin("replaygain", configure=plugin_configure,
                            libs=["math"])
@@ -17,8 +150,8 @@
  
  def plugin_configure(conf):
 -    conf.check_cc(lib="m", uselib_store="math")
-+    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
-+        conf.env.LIB_math = ["m"]
++    conf.env.LIB_math = ["m"]
++    conf.check_cc(lib="m", uselib_store="math", mandatory=False)
  
  configure, build = plugin("equalizer", configure=plugin_configure, libs=["math"],
                            source=source)
@@ -29,8 +162,8 @@
  
  def plugin_configure(conf):
 -    conf.check_cc(lib="m", uselib_store="math")
-+    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
-+        conf.env.LIB_math = ["m"]
++    conf.env.LIB_math = ["m"]
++    conf.check_cc(lib="m", uselib_store="math", mandatory=False)
  
  configure, build = plugin("karaoke", configure=plugin_configure, libs=["math"])
 --- xmms2-0.9.7/src/plugins/mp4/wscript
@@ -40,8 +173,8 @@
  
  def plugin_configure(conf):
 -    conf.check_cc(lib="m", uselib_store="math")
-+    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
-+        conf.env.LIB_math = ["m"]
++    conf.env.LIB_math = ["m"]
++    conf.check_cc(lib="m", uselib_store="math", mandatory=False)
  
      conf.env.DEFINES_mp4 = ['USE_TAGGING']
      # to use iTunes DRM change this to true
@@ -52,38 +185,21 @@
  
  def plugin_configure(conf):
 -    conf.check_cc(lib="m", uselib_store="math")
-+    if not conf.check_cc(lib="m", uselib_store="math", mandatory=False):
-+        conf.env.LIB_math = ["m"]
++    conf.env.LIB_math = ["m"]
++    conf.check_cc(lib="m", uselib_store="math", mandatory=False)
      conf.check_cc(header_name="faad.h")
      conf.check_cc(lib="faad", uselib="math", uselib_store="faad")
  
---- xmms2-0.9.7/src/xmms/wscript
-+++ xmms2-0.9.7/src/xmms/wscript
-@@ -234,8 +234,11 @@
-         return sin(0.5);
-     }
-     """
--    conf.check_cc(lib='m', fragment=sin_fragment, header_name='math.h',
--                  uselib_store="math")
-+    # On some arches the sin()/libm link probe fails under LTO/Clang even though
-+    # math.h and -lm work; force the math uselib so the daemon still configures.
-+    if not conf.check_cc(lib='m', fragment=sin_fragment, header_name='math.h',
-+                         uselib_store="math", mandatory=False):
-+        conf.env.LIB_math = ["m"]
- 
-     conf.env.compat_impl = get_compat_impl(conf)
-     conf.env.statfs_impl = get_statfs_impl(conf)
 --- xmms2-0.9.7/src/lib/xmmsvisualization/wscript
 +++ xmms2-0.9.7/src/lib/xmmsvisualization/wscript
 @@ -30,8 +30,9 @@
          return modf(0.0, 0);
      }
      """
--    conf.check_cc(fragment=modf_fragment, header_name="math.h",
++    conf.env.LIB_math = ["m"]
+     conf.check_cc(fragment=modf_fragment, header_name="math.h",
 -            lib="m", uselib_store="math")
-+    if not conf.check_cc(fragment=modf_fragment, header_name="math.h",
-+            lib="m", uselib_store="math", mandatory=False):
-+        conf.env.LIB_math = ["m"]
++            lib="m", uselib_store="math", mandatory=False)
      return True
  
  
