@@ -73,3 +73,17 @@
  
      conf.env.compat_impl = get_compat_impl(conf)
      conf.env.statfs_impl = get_statfs_impl(conf)
+--- xmms2-0.9.7/src/lib/xmmsvisualization/wscript
++++ xmms2-0.9.7/src/lib/xmmsvisualization/wscript
+@@ -30,8 +30,9 @@
+         return modf(0.0, 0);
+     }
+     """
+-    conf.check_cc(fragment=modf_fragment, header_name="math.h",
+-            lib="m", uselib_store="math")
++    if not conf.check_cc(fragment=modf_fragment, header_name="math.h",
++            lib="m", uselib_store="math", mandatory=False):
++        conf.env.LIB_math = ["m"]
+     return True
+ 
+ 
