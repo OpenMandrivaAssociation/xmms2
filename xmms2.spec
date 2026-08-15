@@ -186,6 +186,3 @@ install -m0755 %{SOURCE1} %{buildroot}%{_bindir}
 %files ruby
 %{ruby_vendorarchdir}/xmmsclient*
 %{ruby_vendorlibdir}/xmmsclient*
-
-# keep %mklibname visible for rpmlint SpecCheck (checks last line only)
-# %mklibname
